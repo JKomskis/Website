@@ -1,0 +1,114 @@
+body{
+    margin: 0px;
+    background-color: #fdf6e3;
+    color: #002b36;
+}
+
+p{
+    margin: 0em;
+}
+
+h1{
+    font-size: 3em !important;
+    font-weight: 200;
+}
+
+#main{
+    text-align: center;
+}
+
+.pure-menu-link{
+    color: #fdf6e3 !important;
+}
+
+.pure-menu-link:hover, .pure-menu-link:hover:focus{
+    background-color: #586e75 !important;
+}
+
+.pure-menu-link:focus{
+    background-color: transparent !important;
+}
+
+.pure-menu-heading{
+    color: #fdf6e3 !important;
+    text-transform: none !important;
+}
+
+.navbar {
+    background-color: #002b36;
+    margin-bottom: 1em;
+    -webkit-font-smoothing: antialiased;
+    height: 2.1em;
+    font-size: 1.5em;
+    overflow: hidden;
+    -webkit-transition: height 0.5s;
+    -moz-transition: height 0.5s;
+    -ms-transition: height 0.5s;
+    transition: height 0.5s;
+}
+
+.navbar.open {
+    height: 9em;
+}
+
+.menu-right {
+    text-align: right;
+}
+
+.toggle {
+    width: 34px;
+    height: 34px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: none;
+}
+
+.toggle .bar {
+    display: block;
+    width: 20px;
+    height: 2px;
+    border: none;
+    background-color: #fdf6e3;
+    color: #fdf6e3;
+    position: absolute;
+    top: 15px;
+    right: 7px;
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+.toggle .bar:first-child {
+    -webkit-transform: translateY(-6px);
+    -moz-transform: translateY(-6px);
+    -ms-transform: translateY(-6px);
+    transform: translateY(-6px);
+}
+
+.toggle.x .bar {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.toggle.x .bar:first-child {
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+@media (max-width: 47.999em) {
+
+    .menu-right {
+        text-align: left;
+    }
+
+    .toggle {
+        display: block;
+    }
+
+}
