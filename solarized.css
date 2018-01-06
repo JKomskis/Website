@@ -3,6 +3,20 @@ body{
   color: #002b36;
 }
 
+h1{
+  font-size: 3em;
+  font-weight: 500;
+  margin: 0.5em;
+}
+
+p{
+  margin: 0em;
+}
+
+#main{
+  text-align: center;
+}
+
 .btn, .form-select, :not([multiple]):not([size]).form-select, .form-input{
   background-color: #fdf6e3;
   border-color: #002b36;
