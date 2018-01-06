@@ -1,0 +1,52 @@
+body{
+  background-color: #fdf6e3;
+  color: #002b36;
+}
+
+.btn, .form-select, :not([multiple]):not([size]).form-select, .form-input{
+  background-color: #fdf6e3;
+  border-color: #002b36;
+  color: #002b36;
+}
+
+.btn:focus, .form-select:focus, .form-input:focus{
+  box-shadow: 0px 0px 0px 0.1rem rgba(38, 139, 210, 0.2);
+}
+
+.btn:hover, .btn:focus, [readonly].form-input{
+  background-color: #eee8d5;
+}
+
+.navbar, .navbar .navbar-section .btn{
+  background-color: #002b36;
+}
+
+.navbar .navbar-section .btn:hover{
+  background-color: #586375;
+}
+
+.navbar .navbar-section .btn-link, 
+.navbar .navbar-section .navbar-brand, 
+.navbar .navbar-section .navber-brand:hover{
+  color: #fdf6e3;
+  font-size: 1.5em;
+}
+
+.btn.btn.btn-primary{
+  background-color: #268bd2;
+}
+
+.btn.btn-primary:focus, .btn.btn-primary:hover{
+  background-color: rgba(28, 100, 151, 1);
+}
+
+.flexLeft{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.flexDown{
+  display: flex;
+  flex-direction: column;
+}
