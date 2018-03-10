@@ -1,6 +1,6 @@
 body{
-  background-color: #fdf6e3;
-  color: #002b36;
+  background-color: #002b36;
+  color: #93a1a1;
 }
 
 h1{
@@ -13,14 +13,23 @@ p{
   margin: 0em;
 }
 
+hr{
+  border-color: #93a1a1;
+  color: #93a1a1;
+  background-color: #93a1a1;
+}
+
 #main{
   text-align: center;
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 
 .btn, .form-select, :not([multiple]):not([size]).form-select, .form-input{
-  background-color: #fdf6e3;
+  background-color: #073642;
   border-color: #002b36;
-  color: #002b36;
+  border: rgba(38, 139, 210, 0.2);
+  color: #93a1a1;
 }
 
 .btn:focus, .form-select:focus, .form-input:focus{
@@ -28,7 +37,7 @@ p{
 }
 
 .btn:hover, .btn:focus, [readonly].form-input{
-  background-color: #eee8d5;
+  background-color: #073642;
 }
 
 .navbar, .navbar .navbar-section .btn{
@@ -63,4 +72,42 @@ p{
 .flexDown{
   display: flex;
   flex-direction: column;
+}
+
+.card{
+  background-color: #073642;
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  border: 0;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+}
+
+.card-image img{
+  max-height: 12rem;
+}
+
+.hidden{
+  display: none;
+}
+
+ul{
+  text-align: left;
+}
+
+a{
+  color: #268bd2;
+}
+
+a:focus, a:active, a:hover{
+  color: #2aa198;
+}
+
+li{
+  display: list-item;
+}
+
+li p{
+  display: inline;
 }
