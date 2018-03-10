@@ -84,10 +84,6 @@ hr{
   padding-bottom: 0.4rem;
 }
 
-.card-image img{
-  max-height: 12rem;
-}
-
 .hidden{
   display: none;
 }
