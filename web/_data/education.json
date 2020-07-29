@@ -1,0 +1,25 @@
+{
+    "degrees": [
+        {
+            "school": "Georgia Institute of Technology",
+            "degree": "Master of Science in Computer Science",
+            "location": "Atlanta, GA",
+            "graduationDate": "May 2022",
+            "mainPoints": [],
+            "logo": "assets/img/logos/gatech.png"
+        },
+        {
+            "school": "University of Florida",
+            "degree": "Bachelor of Science in Computer Science",
+            "location": "Gainesville, FL",
+            "graduationDate": "May 2020",
+            "mainPoints": [
+                "GPA: 3.98",
+                "Cum Laude",
+                "Honors Program",
+                "Minor: Business Administration"
+            ],
+            "logo": "assets/img/logos/uf.png"
+        }
+    ]
+}

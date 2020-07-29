@@ -1,0 +1,36 @@
+.project__wrapper {
+  @include card;
+
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  margin: 1rem;
+  width: 100%;
+  @include respond-to('large') {
+    max-width: 25rem;
+    width: fit-content;
+  }
+}
+
+.project__name {
+  font-size: $headline-font-size;
+  font-weight: $semibold-font-weight;
+  margin: 0;
+}
+
+.project__motivation {
+  font-style: italic;
+  margin: 0;
+}
+
+.project__linkWrapper {
+  margin-top: auto;
+}
+
+.project__startEndDate {
+  //
+}
+
+.project__summary {
+  //
+}

@@ -1,0 +1,29 @@
+.homeTitle__wrapper {
+  display: block;
+
+  @include respond-to('large') {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+  }
+}
+  
+.homeTitle__text {
+  font-size: $big-font-size;
+  font-weight: $semibold-font-weight;
+  grid-column: 8 / span 1;
+  grid-row: 1 / span 1;
+  text-align: right;
+}
+  
+.homeSection__title {
+  font-size: $title-font-size;
+  font-weight: $semibold-font-weight;
+  margin: 1rem;
+}
+
+.homeProjectsSection__wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 1rem;
+}

@@ -1,0 +1,41 @@
+{
+  "name": "website",
+  "version": "1.0.0",
+  "description": "My personal website",
+  "main": "",
+  "scripts": {
+    "build": "gulp",
+    "compile": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JKomskis/Website.git"
+  },
+  "author": "Joe Komskis",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/JKomskis/Website/issues"
+  },
+  "homepage": "https://github.com/JKomskis/Website#readme",
+  "devDependencies": {
+    "@11ty/eleventy": "^0.11.0",
+    "autoprefixer": "^9.8.5",
+    "browser-sync": "^2.26.12",
+    "cssnano": "^4.1.10",
+    "gulp": "^4.0.2",
+    "gulp-brotli": "^3.0.0",
+    "gulp-postcss": "^8.0.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^4.1.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-stylelint": "^13.0.0",
+    "node-sass": "^4.14.1",
+    "stylelint": "^13.6.1",
+    "stylelint-config-sass-guidelines": "^7.0.0"
+  },
+  "dependencies": {
+    "@fluentui/react": "^7.123.9",
+    "@ibm/plex": "^5.0.0"
+  }
+}
