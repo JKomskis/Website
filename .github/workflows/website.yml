@@ -1,0 +1,63 @@
+name: Build and Deploy Website
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Cache node modules
+      uses: actions/cache@v1
+      env:
+        cache-name: cache-node-modules
+      with:
+        path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+
+    - name: Use Node.js 14
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14.x
+
+    - run: npm ci
+
+    - run: npm run build
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: dist
+        path: _site/
+
+  deploy:
+    needs: build
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: dist
+        path: _site/
+
+    - uses: azure/login@v1.1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: Upload to blob storage
+      uses: azure/cli@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az storage blob upload-batch -s _site/ -d \$web --account-name ${{ secrets.STORAGE_ACCOUNT_NAME }} --auth-mode login
+

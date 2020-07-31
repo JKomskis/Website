@@ -1,2 +1,5 @@
-#minified and optimized files
-build
+# node modules
+node_modules
+
+# build folder
+_site

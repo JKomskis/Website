@@ -1,0 +1,64 @@
+{
+    "jobs": [
+        {
+            "employer": "Microsoft",
+            "title": "Software Engineering Intern (Virtual Internship)",
+            "location": "Ft Lauderdale, FL",
+            "startEndDate": "May 2020 - August 2020",
+            "mainPoints": [
+                "Designed and implemented share caching in Azure Data Lake Store to reduce load on the namespace service of ADLS",
+                "Collected and analyzed log files from production machines to estimate impact and tune caching parameters",
+                "Executed test workloads before and after caching to evaluate performance improvements"
+            ],
+            "logo": "assets/img/logos/microsoft.png"
+        },
+        {
+            "employer": "University of Florida",
+            "title": "Undergraduate Teaching Assistant - Data Structures and Algorithms",
+            "location": "Gainesville, FL",
+            "startEndDate": "August 2018 - May 2020",
+            "mainPoints": [
+                "Taught a weekly discussion of 50 students, administered and graded quizzes, reviewed and gave context to material",
+                "Held weekly office hours to help students with assignments and projects",
+                "Organized the creation of an interface, test suite, and automatic grader for a project implementing Huffman’s Algorithm"
+            ],
+            "logo": "assets/img/logos/uf.png"
+        },
+        {
+            "employer": "University of Florida Programming Team",
+            "title": "Captain\nLead",
+            "location": "Gainesville, FL",
+            "startEndDate": "January 2019-May 2020\nSeptember 2018-January 2019",
+            "mainPoints": [
+                "Competed in ACM Programming Competitions focusing in data structures and algorithms",
+                "Led meetings and taught competitive programming topics such as algorithm complexity",
+                "<strong>SER 2017</strong>: 20/47 <strong>SER 2018</strong>: 10/36 <strong>SER 2019</strong>: 11/36"
+            ],
+            "shortname": "UFPT"
+        },
+        {
+            "employer": "Microsoft",
+            "title": "Software Engineering Intern",
+            "location": "Redmond, WA",
+            "startEndDate": "May 2019 - August 2019",
+            "mainPoints": [
+                "Implemented directory range partitioning to increase throughput of the hierarchical namespace service of Azure Storage",
+                "Demonstrated performance improvements using parallelized tests",
+                "Documented the design and implementation to facilitate understanding of the project in the future"
+            ],
+            "logo": "assets/img/logos/microsoft.png"
+        },
+        {
+            "employer": "Ultimate Software",
+            "title": "Software Engineering Intern",
+            "location": "Weston, FL",
+            "startEndDate": "May 2018 - August 2018",
+            "mainPoints": [
+                "Shortened the feedback loop of the TeamCity CI/CD pipeline and optimized acceptance testing, increasing team workflow efficiency",
+                "Created a new CI/CD pipeline for deploying and reconciling forms to assist migrating to a microservices architecture",
+                "Tested and reviewed code developed by other members of my team to ensure coding standards were met"
+            ],
+            "logo": "assets/img/logos/ultimate.png"
+        }
+    ]
+}

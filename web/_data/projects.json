@@ -1,0 +1,152 @@
+{
+    "projects": [
+        {
+            "name": "This Website",
+            "summary": "My personal, static website.",
+            "startEndDate": "Since March 2018",
+            "motivation": "Personal Project",
+            "links": [
+                {
+                    "text": "Source Code",
+                    "link": "https://github.com/JKomskis/Website",
+                    "type": "standard"
+                }
+            ]
+        },
+        {
+            "name": "Multicloud Failover",
+            "summary": "Application agnostic service that resides between end users and cloud providers to provide high availability and automatic failover to applications without code changes or vendor lockin.",
+            "startEndDate": "January 2020 - April 2020",
+            "motivation": "CIS4930 Senior Project: Term Project",
+            "links": [
+                {
+                    "text": "Source Code",
+                    "link": "https://github.com/sflitter97/Cloud-Failover",
+                    "type": "standard"
+                },
+                {
+                    "text": "Design Document",
+                    "link": "",
+                    "type": "primary",
+                    "disabled": "true"
+                }
+            ]
+        },
+        {
+            "name": "Aca-Bot",
+            "summary": "A GroupMe bot for an a capella group.",
+            "startEndDate": "June 2019 - July 2020",
+            "motivation": "Personal Project",
+            "links": [
+                {
+                    "text": "Source Code",
+                    "link": "https://github.com/JKomskis/Aca-Bot",
+                    "type": "standard"
+                }
+            ]
+        },
+        {
+            "name": "MossJS",
+            "summary": "A web-based graph visualization tool for Stanford Moss.",
+            "startEndDate": "April 2019 - May 2019",
+            "motivation": "Personal Project",
+            "links": [
+                {
+                    "text": "Source Code",
+                    "link": "https://github.com/JKomskis/MossJS",
+                    "type": "standard"
+                },
+                {
+                    "text": "Demo",
+                    "link": "",
+                    "type": "primary",
+                    "disabled": "true"
+                }
+            ]
+        },
+        {
+            "name": "COP3530 S19 Huffman Algorithm",
+            "summary": "Project Skeleton for the COP3530 Spring 2019 Huffman Algorithm Project.",
+            "startEndDate": "January 2019 - April 2019",
+            "motivation": "COP3530 Data Structures: TA Project",
+            "links": [
+                {
+                    "text": "Source Code",
+                    "link": "https://github.com/JKomskis/COP3530-S19-Huffman-Algorithm",
+                    "type": "standard"
+                }
+            ]
+        },
+        {
+            "name": "Ebook Search",
+            "summary": "A NodeJS backend that searches various ebook sources and a static webfront end to display the results.",
+            "startEndDate": "March 2018 - July 2020",
+            "motivation": "Personal Project",
+            "links": [
+                {
+                    "text": "Source Code",
+                    "link": "https://github.com/JKomskis/ebook-search",
+                    "type": "standard"
+                },
+                {
+                    "text": "Demo",
+                    "link": "",
+                    "type": "primary",
+                    "disabled": "true"
+                }
+            ]
+        },
+        {
+            "name": "ufInfoSec_webapp",
+            "summary": "Site built to meet all the needs of UF Information Security Club that cannot be met by blog.",
+            "startEndDate": "January 2018 - May 2018",
+            "motivation": "CEN3031 Software Engineering: Term Project",
+            "links": [
+                {
+                    "text": "Source Code",
+                    "link": "https://github.com/CEN3031-SIT-WEB-APP/ufInfoSec_webapp",
+                    "type": "standard"
+                }
+            ]
+        },
+        {
+            "name": "OOP There It Is",
+            "summary": "An RPG game with the goal of implementing proper OOP principles.",
+            "startEndDate": "January 2018 - May 2018",
+            "motivation": "COP4331 Object Oriented Programming: Term Project",
+            "links": [
+                {
+                    "text": "Source Code",
+                    "link": "https://github.com/JKomskis/OOP-There-It-Is",
+                    "type": "standard"
+                }
+            ]
+        },
+        {
+            "name": "GameOfLife",
+            "summary": "An implementation of Conway's game of life in C++, with some extra fun features.",
+            "startEndDate": "January 2017 - April 2017",
+            "motivation": "COP3503 Programming 2: Term Project",
+            "links": [
+                {
+                    "text": "Source Code",
+                    "link": "https://github.com/JKomskis/GameOfLife",
+                    "type": "standard"
+                }
+            ]
+        },
+        {
+            "name": "GoogleGarbler",
+            "summary": "A website that uses Google Translate's API to translate text through multile languages before translating back to the original language.",
+            "startEndDate": "December 2016 - May 2018",
+            "motivation": "Personal Project",
+            "links": [
+                {
+                    "text": "Source Code",
+                    "link": "https://github.com/JKomskis/GoogleGarbler",
+                    "type": "standard"
+                }
+            ]
+        }
+    ]
+}

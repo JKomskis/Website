@@ -1,9 +1,0 @@
-[submodule "ebooks"]
-	path = ebooks
-	url = https://github.com/JKomskis/ebook-search.git
-[submodule "wikigraph"]
-	path = wikigraph
-	url = https://github.com/JKomskis/Wikigraph.git
-[submodule "googlegarbler"]
-	path = googlegarbler
-	url = https://github.com/JKomskis/GoogleGarbler.git
