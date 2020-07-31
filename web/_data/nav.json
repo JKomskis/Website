@@ -11,6 +11,10 @@
         {
             "name": "Blog",
             "href": "/blog"
+        },
+        {
+            "name": "Resume",
+            "href": "https://jkomskisstatic.blob.core.windows.net/uploads/resume-joseph-komskis.pdf"
         }
     ],
     "links": [

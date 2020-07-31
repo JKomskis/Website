@@ -1,4 +1,4 @@
-name: Lint and Build Website
+name: Build Website
 
 on:
   push:
@@ -9,12 +9,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # defaults:
-      # run:
-      #   working-directory: boids_lib
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Cache node modules
       uses: actions/cache@v1
       env:
@@ -26,9 +24,17 @@ jobs:
           ${{ runner.os }}-build-${{ env.cache-name }}-
           ${{ runner.os }}-build-
           ${{ runner.os }}-
+
     - name: Use Node.js 14
       uses: actions/setup-node@v1
       with:
         node-version: 14.x
+
     - run: npm ci
+
     - run: npm run build
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: dist
+        path: _site/

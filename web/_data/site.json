@@ -1,5 +1,6 @@
 {
 	"title": "Joe Komskis",
 	"author": "Joe Komskis",
-	"url": "https://www.jkomskis.com"
+	"url": "https://www.jkomskis.com",
+	"cdnUrl": "https://jkomskisstatic.blob.core.windows.net/uploads"
 }
