@@ -3,7 +3,7 @@ module.exports = {
     dest: "./_site",
     css: {
         src: './web/css/**/*.scss',
-        dest: './_site/css'
+        dest: './_site/assets/css'
     },
     fonts: {
         base: './node_modules/@ibm/plex/',
