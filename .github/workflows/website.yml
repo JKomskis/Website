@@ -32,7 +32,7 @@ jobs:
 
     - run: npm ci
 
-    - run: npm run build
+    - run: npm run build:prod
 
     - uses: actions/upload-artifact@v2
       with:
@@ -53,11 +53,35 @@ jobs:
     - uses: azure/login@v1.1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+        enable-AzPSSession: true
     
     - name: Upload to blob storage
-      uses: azure/cli@v1
+      uses: azure/powershell@v1
       with:
-        azcliversion: latest
+        azPSVersion: latest
         inlineScript: |
-          az storage blob upload-batch -s _site/ -d \$web --account-name ${{ secrets.STORAGE_ACCOUNT_NAME }} --auth-mode login
+          $staticAssetCacheControl = "public, max-age=31536000, immutable"
+          $revalidateAssetCacheControl = "no-cache"
+          $cacheControlHeaders = @{
+            ".css" = $staticAssetCacheControl;
+            ".js" = $staticAssetCacheControl;
+            ".woff" = $staticAssetCacheControl;
+            ".woff2" = $staticAssetCacheControl;
+            ".jpg" = $staticAssetCacheControl;
+            ".png" = $staticAssetCacheControl;
+            ".svg" = $staticAssetCacheControl;
+            ".html" = $revalidateAssetCacheControl;
+          }
+          cd _site
+          Set-AzCurrentStorageAccount -ResourceGroupName ${{ secrets.RESOURCE_GROUP_NAME }} -Name ${{ secrets.STORAGE_ACCOUNT_NAME }}
+          Get-ChildItem -File -Recurse |
+            Foreach-Object {
+              Write-Output $_.fullName
+              Write-Output $_.extension
+              $cacheControlHeader = if($cacheControlHeaders.containsKey($_.extension)) { $cacheControlHeaders[$_.extension] } else { $revalidateAssetCacheControl }
+              $properties = @{ CacheControl = $cacheControlHeader }
+              $relativePath = $_ | Resolve-Path -Relative
+              Set-AzStorageBlobContent -File $_.fullName -Blob $relativePath -Container "$web" -properties $properties -Force
+            }
+          # az storage blob upload-batch -s _site/ -d \$web --account-name ${{ secrets.STORAGE_ACCOUNT_NAME }} --auth-mode login
 

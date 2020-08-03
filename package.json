@@ -6,6 +6,7 @@
   "scripts": {
     "build": "gulp",
     "compile": "npm run build",
+    "build:prod": "gulp buildProd",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
