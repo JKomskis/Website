@@ -81,7 +81,7 @@ jobs:
               $cacheControlHeader = if($cacheControlHeaders.containsKey($_.extension)) { $cacheControlHeaders[$_.extension] } else { $revalidateAssetCacheControl }
               $properties = @{ CacheControl = $cacheControlHeader }
               $relativePath = $_ | Resolve-Path -Relative
-              Set-AzStorageBlobContent -File $_.fullName -Blob $relativePath -Container "$web" -properties $properties -Force
+              Set-AzStorageBlobContent -File $_.fullName -Blob $relativePath -Container '$web' -properties $properties -Force
             }
           # az storage blob upload-batch -s _site/ -d \$web --account-name ${{ secrets.STORAGE_ACCOUNT_NAME }} --auth-mode login
 
