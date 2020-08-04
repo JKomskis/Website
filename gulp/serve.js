@@ -6,7 +6,7 @@ const watchEleventy = require('./eleventy').watch;
 
 function watchFiles() {
     watch("./web/css/**/*.scss", css);
-    watch("./web/assets/**/*", assets)
+    watch("./web/assets/**/*", assets);
     watchEleventy();
 }
 

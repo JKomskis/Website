@@ -48,7 +48,7 @@
 
 @include respond-to('can-hover') {
   .nav__link:hover {
-    opacity: 0.9;
+    opacity: 1;
   }
 }
 

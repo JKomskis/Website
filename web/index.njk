@@ -7,7 +7,7 @@ layout: layouts/default
 <section class="homeSection__wrapper">
     <a id="Education"></a>
     <h1 class="homeSection__title">Education</h1>
-    {% for degree in education.degrees %}
+    {%- for degree in education.degrees %}
         <div class="degree__wrapper">
             <img class="degree__logo" src="{{ degree.logo }}"></img>
             <p class="degree__school">{{ degree.school }}</p>
@@ -15,50 +15,50 @@ layout: layouts/default
             <p class="degree__location">{{ degree.location }}</p>
             <p class="degree__graduationDate">{{ degree.graduationDate }}</p>
             <ul class="degree__mainPoints">
-                {% for mainPoint in degree.mainPoints %}
+                {%- for mainPoint in degree.mainPoints %}
                     <li class="degree__mainPoint">{{ mainPoint }}</li>
-                {% endfor %}
+                {% endfor -%}
             </ul>
         </div>
-    {% endfor %}
+    {% endfor -%}
 </section>
 <section class="homeSection__wrapper">
     <a id="Experience"></a>
     <h1 class="homeSection__title">Experience</h1>
-    {% for job in experience.jobs %}
+    {%- for job in experience.jobs %}
         <div class="job__wrapper">
-            {% if job.logo %}
+            {%- if job.logo %}
                 <img class="job__logo" src="{{ job.logo }}"></img>
             {% elif job.shortname %}
                 <p class="job__logo">{{ job.shortname }}</p>
-            {% endif %}
+            {% endif -%}
             <p class="job__employer">{{ job.employer }}</p>
             <p class="job__title">{{ job.title | addLineBreaks | safe }}</p>
             <p class="job__location">{{ job.location }}</p>
             <p class="job__startEndDate">{{ job.startEndDate | addLineBreaks | safe }}</p>
             <ul class="job__mainPoints">
-                {% for mainPoint in job.mainPoints %}
+                {%- for mainPoint in job.mainPoints %}
                     <li class="job__mainPoint">{{ mainPoint | safe }}</li>
-                {% endfor %}
+                {% endfor -%}
             </ul>
         </div>
-    {% endfor %}
+    {% endfor -%}
 </section>
 <section class="homeSection__wrapper">
     <a id="Projects"></a>
     <h1 class="homeSection__title">Projects</h1>
     <div class="homeProjectsSection__wrapper">
-        {% for project in projects.projects %}
+        {%- for project in projects.projects %}
             <div class="project__wrapper">
-                {% if project.img %}
+                {%- if project.img %}
                     <img src="{{ project.img }}"></img>
-                {% endif %}
+                {% endif -%}
                 <p class="project__name">{{ project.name }}</p>
                 <p class="project__motivation">{{ project.motivation }}</p>
                 <p class="project__startEndDate">{{ project.startEndDate }}</p>
                 <p class="project__summary">{{ project.summary }}</p>
                 <div class="project__linkWrapper">
-                    {% for link in project.links %}
+                    {%- for link in project.links %}
                         <a href="{{ link.link }}"><button type="button" class=
                             {%- if link.type === 'standard' -%}
                                 button--standard
@@ -66,9 +66,9 @@ layout: layouts/default
                                 button--primary
                             {%- endif -%}
                         {%- if link.disabled -%} -disabled {%- endif -%}>{{ link.text }}</button></a>
-                    {% endfor %}
+                    {% endfor -%}
                 </div>
             </div>
-        {% endfor %}
+        {% endfor -%}
     </div>
 </section>
