@@ -22,9 +22,9 @@
 
 /// Card base style
 @mixin card {
+  @include ms-depth-4;
   background-color: $light-background-color;
   border-radius: 2px;
-  box-shadow: $ms-depth-shadow-4;
   height: fit-content;
   padding: 2rem;
   transition: 0.4s;
@@ -32,7 +32,7 @@
 
   @include respond-to('can-hover') {
     &:hover {
-      box-shadow: $ms-depth-shadow-16;
+      @include ms-depth-16;
     }
   }
 }

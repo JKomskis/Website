@@ -1,26 +1,32 @@
 const { series, src, dest } = require('gulp');
 const rename = require('gulp-rename');
-var sourcemaps = require('gulp-sourcemaps');
-var sass = require('gulp-sass');
-sass.compiler = require('node-sass');
+const sourcemaps = require('gulp-sourcemaps');
+const sass = require('gulp-sass');
+const Fiber = require('fibers');
+sass.compiler = require('sass');
 const postcss = require('gulp-postcss');
 const cssnano = require('cssnano');
 const autoprefixer = require('autoprefixer');
 const gulpStylelint = require('gulp-stylelint');
 const paths = require('./paths');
 
-function compileCss() {
-    const postCssPlugins = [
-        autoprefixer()
-    ];
+
+function lintCss() {
     return src(paths.css.src)
         .pipe(gulpStylelint({
             reporters: [
                 { formatter: 'string', console: true }
             ]
         }))
+}
+
+function compileCss() {
+    const postCssPlugins = [
+        autoprefixer()
+    ];
+    return src(paths.css.src)
         .pipe(sourcemaps.init())
-        .pipe(sass().on('error', sass.logError))
+        .pipe(sass({ fiber: Fiber }).on('error', sass.logError))
         .pipe(postcss(postCssPlugins))
         .pipe(sourcemaps.write('.'))
         .pipe(dest(paths.css.dest));
@@ -38,4 +44,5 @@ function minifyCss() {
         .pipe(dest(paths.css.dest));
 }
 
-exports.css = series(compileCss, minifyCss);
+exports.css = series(lintCss, compileCss, minifyCss);
+exports.lintCss = lintCss;

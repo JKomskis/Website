@@ -1,6 +1,10 @@
 module.exports = {
     src: "./web",
     dest: "./_site",
+    html: {
+        src: './web/**/*.html',
+        dest: './_site'
+    },
     css: {
         src: './web/css/**/*.scss',
         dest: './_site/assets/css'

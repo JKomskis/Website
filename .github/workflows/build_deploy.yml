@@ -6,12 +6,15 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  NODE_VERSION: '14.x'
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@master
 
     - name: Cache node modules
       uses: actions/cache@v1
@@ -25,10 +28,10 @@ jobs:
           ${{ runner.os }}-build-
           ${{ runner.os }}-
 
-    - name: Use Node.js 14
+    - name: Use Node.js ${{ env.NODE_VERSION }}
       uses: actions/setup-node@v1
       with:
-        node-version: 14.x
+        node-version: ${{ env.NODE_VERSION }}
 
     - run: npm ci
 
@@ -69,7 +72,7 @@ jobs:
             }
             ".js" = @{
               CacheControl = $staticAssetCacheControl
-              ContentType = "application/js"
+              ContentType = "application/javascript"
             }
             ".woff" = @{
               CacheControl = $staticAssetCacheControl

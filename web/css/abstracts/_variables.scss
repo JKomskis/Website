@@ -1,4 +1,5 @@
-@import 'node_modules/@fluentui/react/dist/sass/References';
+@import 'node_modules/office-ui-fabric-core/dist/sass/References';
+@import 'node_modules/office-ui-fabric-core/dist/sass/Depth';
 
 ///
 /// Colors
@@ -61,7 +62,12 @@ $button-disabled-text-color: #f3f3f3 !default;
 ///
 
 $media-queries: (
-  'large': (min-width: 960px),
+  'small': (min-width: 320px),
+  'medium': (min-width: 480px),
+  'large': (min-width: 640px),
+  'xlarge': (min-width: 1024px),
+  'xxlarge': (min-width: 1366px),
+  'xxxlarge': (min-width: 1920px),
   'can-hover': (hover: hover)
 );
 
@@ -77,14 +83,13 @@ $normal-font-weight: 400;
 $semibold-font-weight: 600;
 
 $default-font-size: 16px;
-@include respond-to('large') {
+@include respond-to('xlarge') {
   $default-font-size: 18px;
 }
 $headline-font-size: $default-font-size * 1.618;
 $title-font-size: $default-font-size + $headline-font-size;
 $big-font-size: $title-font-size * 2;
-@include respond-to('large') {
+@include respond-to('xlarge') {
   $big-font-size: $title-font-size * 2;
 }
 $caption-font-size: $default-font-size - 2px;
-

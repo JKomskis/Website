@@ -6,7 +6,7 @@
 
 * Run `npm run build` to build the website (files are placed in _site/)
 * Run `npm run build:prod` to create a production build of the website (files are placed in _site/)
-* Run `npx gulp serve` to host the _site/ folder locally
+* Run `npm run serve` to host the _site/ folder locally
 
 ## Acknowledgements
 

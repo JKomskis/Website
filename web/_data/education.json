@@ -6,7 +6,8 @@
             "location": "Atlanta, GA",
             "graduationDate": "May 2022",
             "mainPoints": [],
-            "logo": "assets/img/logos/gatech.png"
+            "logo": "assets/img/logos/gatech.png",
+            "logo_alt": "Georgia Tech Logo"
         },
         {
             "school": "University of Florida",
@@ -19,7 +20,8 @@
                 "Honors Program",
                 "Minor: Business Administration"
             ],
-            "logo": "assets/img/logos/uf.png"
+            "logo": "assets/img/logos/uf.png",
+            "logo_alt": "UF Logo"
         }
     ]
 }

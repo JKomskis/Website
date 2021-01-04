@@ -1,10 +1,11 @@
 const { src, dest } = require('gulp');
 const htmlmin = require('gulp-htmlmin');
+const paths = require('./paths');
 
 function minifyHtml() {
-    return src('_site/**/*.html')
+    return src(`${paths.dest}/**/*.html`)
         .pipe(htmlmin({ collapseWhitespace: true }))
-        .pipe(dest('_site'));
+        .pipe(dest(paths.dest));
 }
 
 exports.minifyHtml = minifyHtml;

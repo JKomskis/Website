@@ -20,11 +20,15 @@
   }
 }
 
-.button--standard-disabled,
-.button--primary-disabled {
+.button--disabled {
   @include button;
   background-color: $button-disabled-color;
   border: 0;
   color: $secondary-text-color;
   cursor: default;
+
+  &:hover {
+    background-color: $button-disabled-color;
+    border: 0;
+  }
 }

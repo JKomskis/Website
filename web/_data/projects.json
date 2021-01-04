@@ -136,15 +136,20 @@
             ]
         },
         {
-            "name": "GoogleGarbler",
-            "summary": "A website that uses Google Translate's API to translate text through multile languages before translating back to the original language.",
+            "name": "LanguageGarbler",
+            "summary": "A website that uses language translation APIs to translate text through multiple languages at a time.",
             "startEndDate": "December 2016 - May 2018",
             "motivation": "Personal Project",
             "links": [
                 {
                     "text": "Source Code",
-                    "link": "https://github.com/JKomskis/GoogleGarbler",
+                    "link": "https://github.com/JKomskis/LanguageGarbler",
                     "type": "standard"
+                },
+                {
+                    "text": "Demo",
+                    "link": "https://www.jkomskis.com/languagegarbler/",
+                    "type": "primary"
                 }
             ]
         }
