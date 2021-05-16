@@ -24,8 +24,8 @@ function getBlobName(timestamp) {
 }
 
 function getContainerClient() {
-    const account = process.env.ACCOUNT_NAME || '';
-    const accountKey = process.env.ACCOUNT_KEY || '';
+    const account = process.env.OBSCENE_COMMITS_ACCOUNT_NAME || '';
+    const accountKey = process.env.OBSCENE_COMMITS_ACCOUNT_KEY || '';
     const container = process.env.ARCHIVE_CONTAINER_NAME || '';
     const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
 

@@ -41,9 +41,9 @@ jobs:
 
     - run: npm run build:prod
       env:
-        ACCOUNT_NAME: ${{ secrets.OBSCENE_COMMITS_ARCHIVE_ACCOUNT_NAME }}
-        ACCOUNT_KEY: ${{ secrets.OBSCENE_COMMITS_ARCHIVE_ACCOUNT_KEY }}
-        CONTAINER_NAME: ${{ secrets.OBSCENE_COMMITS_ARCHIVE_CONTAINER_NAME }}
+        OBSCENE_COMMITS_ACCOUNT_NAME: ${{ secrets.OBSCENE_COMMITS_ARCHIVE_ACCOUNT_NAME }}
+        OBSCENE_COMMITS_ACCOUNT_KEY: ${{ secrets.OBSCENE_COMMITS_ARCHIVE_ACCOUNT_KEY }}
+        ARCHIVE_CONTAINER_NAME: ${{ secrets.OBSCENE_COMMITS_ARCHIVE_CONTAINER_NAME }}
 
     - uses: actions/upload-artifact@v2
       with:
