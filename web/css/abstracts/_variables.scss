@@ -9,6 +9,10 @@
 /// @type Color
 $background-color: #e4e4e4 !default;
 
+/// Highlighted background color
+/// @type Color
+$highlighted-background-color: darken($background-color, 5%) !default;
+
 /// Light background color
 /// @type Color
 $light-background-color: #fff !default;

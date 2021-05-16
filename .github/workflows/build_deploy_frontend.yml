@@ -1,10 +1,13 @@
-name: Build and Deploy Website
+name: Build and Deploy Frontend
 
 on:
   push:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+  schedule:
+    - cron:  '15 0 * * *'
+  workflow_dispatch:
 
 env:
   NODE_VERSION: '14.x'
@@ -12,17 +15,18 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: build_frontend
 
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
 
     - name: Cache node modules
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       env:
         cache-name: cache-node-modules
       with:
         path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-build-${{ env.cache-name }}-
           ${{ runner.os }}-build-
@@ -36,6 +40,10 @@ jobs:
     - run: npm ci
 
     - run: npm run build:prod
+      env:
+        ACCOUNT_NAME: ${{ secrets.OBSCENE_COMMITS_ARCHIVE_ACCOUNT_NAME }}
+        ACCOUNT_KEY: ${{ secrets.OBSCENE_COMMITS_ARCHIVE_ACCOUNT_KEY }}
+        CONTAINER_NAME: ${{ secrets.OBSCENE_COMMITS_ARCHIVE_CONTAINER_NAME }}
 
     - uses: actions/upload-artifact@v2
       with:
@@ -44,14 +52,23 @@ jobs:
 
   deploy:
     needs: build
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+    if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.head_ref != 'refs/heads/main') }}
     runs-on: ubuntu-latest
+    environment: build_frontend
 
     steps:
+    - name: Set main branch deploy path suffix
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      run: echo "FRONTEND_DEPLOY_PATH=" >> $GITHUB_ENV
+    
+    - name: Set non-main branch deploy path suffix
+      if: ${{ github.event_name == 'pull_request' && github.head_ref != 'refs/heads/main' }}
+      run: echo "FRONTEND_DEPLOY_PATH=${{ github.head_ref }}" >> $GITHUB_ENV
+
     - uses: actions/download-artifact@v2
       with:
         name: dist
-        path: _site/
+        path: _site/${{ env.FRONTEND_DEPLOY_PATH }}
 
     - uses: azure/login@v1.1
       with:
@@ -73,10 +90,6 @@ jobs:
             ".js" = @{
               CacheControl = $staticAssetCacheControl
               ContentType = "application/javascript"
-            }
-            ".woff" = @{
-              CacheControl = $staticAssetCacheControl
-              ContentType = "font/woff"
             }
             ".woff2" = @{
               CacheControl = $staticAssetCacheControl
@@ -102,15 +115,14 @@ jobs:
           cd _site
           Set-AzCurrentStorageAccount -ResourceGroupName ${{ secrets.RESOURCE_GROUP_NAME }} -Name ${{ secrets.STORAGE_ACCOUNT_NAME }}
           Get-ChildItem -File -Recurse |
-            Foreach-Object {
-              Write-Output $_.fullName
-              Write-Output $_.extension
-              $fileProperties = $properties[$_.extension]
+            Foreach-Object -Parallel {
+              $properties_dict = $using:properties
+              $fileProperties = $properties_dict[$_.extension]
               $relativePath = $_ | Resolve-Path -Relative
               if($fileProperties) {
                 Set-AzStorageBlobContent -File $_.fullName -Blob $relativePath -Container '$web' -properties $fileProperties -Force
               } else {
                 Set-AzStorageBlobContent -File $_.fullName -Blob $relativePath -Container '$web' -Force
               }
-            }
+            } -ThrottleLimit 50
 

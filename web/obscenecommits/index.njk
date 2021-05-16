@@ -1,0 +1,32 @@
+---
+layout: layouts/base
+pagination:
+  data: commits
+  alias: commits
+  size: 25
+permalink: "obscenecommits/{% if pagination.pageNumber < pagination.pages.length-1 %}page/page-{{ pagination.pageNumber + 1 }}.html{% else %}index.html{% endif %}"
+cssStylesheets: [ "css/main.min.css" ]
+title: Obscene Commits
+subtitle: The greatest commits on GitHub
+description: The greatest commits on Github
+sourceLink: https://github.com/JKomskis/ObsceneCommits
+---
+<div class="OcTitle__wrapper">
+    <h1 class="OcTitle__text">{{ title }}</h1>
+    <p class="OcTitle__subtitle">{{ subtitle }}</p>
+</div>
+<div class="about">
+    <a href={{ sourceLink }}>Source Code</a>
+</div>
+<main class="OcMain">
+    <div class="commit-container">
+        {% for commit in commits | reverse %}
+            {% include "components/obscenecommits/commit-entry.njk" %}
+        {% endfor %}
+    </div>
+    <div class="pagination__navigation">
+        <a {% if pagination.href.next != null %} href="{{ pagination.href.next | makePathRelative }}" {% endif %}>Previous</a>
+        <a class="pagination__next" {% if pagination.href.previous != null %} href="{{ pagination.href.previous | makePathRelative }}" {% endif %}>Next</a>
+    </div>
+</main>
+<script type="module" src="{% if pagination.pageNumber < pagination.pages.length-1 %}../{% endif %}js/bundle.js"></script>

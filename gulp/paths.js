@@ -6,18 +6,18 @@ module.exports = {
         dest: './_site'
     },
     css: {
-        src: './web/css/**/*.scss',
-        dest: './_site/assets/css'
+        src: './web/**/css/**/*.scss',
+        dest: './_site'
+    },
+    ts: {
+        src: './web/**/ts/**/main.ts',
+        dest: './_site'
     },
     fonts: {
         base: './node_modules/@ibm/plex/',
         src: [
-            './node_modules/@ibm/plex/IBM-Plex-Mono/fonts/**/*.woff',
-            './node_modules/@ibm/plex/IBM-Plex-Mono/fonts/**/*.woff2',
-            './node_modules/@ibm/plex/IBM-Plex-Sans/fonts/**/*.woff',
-            './node_modules/@ibm/plex/IBM-Plex-Sans/fonts/**/*.woff2',
-            './node_modules/@ibm/plex/IBM-Plex-Serif/fonts/**/*.woff',
-            './node_modules/@ibm/plex/IBM-Plex-Serif/fonts/**/*.woff2',
+            './node_modules/@ibm/plex/IBM-Plex-{Mono,Sans,Serif}/fonts/complete/**/*.woff2',
+            './node_modules/@ibm/plex/IBM-Plex-{Mono,Sans,Serif}/fonts/split/**/*Latin1.woff2',
         ],
         dest: './_site/assets/fonts/'
     },

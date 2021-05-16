@@ -7,16 +7,18 @@ const { fonts } = require('./gulp/fonts');
 const { rev } = require('./gulp/rev');
 const { serve } = require('./gulp/serve');
 const { minifyHtml } = require('./gulp/html');
+const { lintTs, ts } = require('./gulp/ts');
 
 exports.clean = clean;
 
 exports.lint = parallel(
-    lintCss
+    lintCss,
+    lintTs
 );
 
 exports.build = series(
     clean,
-    parallel(assets, css, fonts, eleventy)
+    parallel(assets, css, fonts, eleventy, ts)
 );
 
 exports.serve = series(exports.build, serve);

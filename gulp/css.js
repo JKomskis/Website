@@ -9,6 +9,7 @@ const cssnano = require('cssnano');
 const autoprefixer = require('autoprefixer');
 const gulpStylelint = require('gulp-stylelint');
 const paths = require('./paths');
+const path = require('path');
 
 
 function lintCss() {
@@ -29,7 +30,10 @@ function compileCss() {
         .pipe(sass({ fiber: Fiber }).on('error', sass.logError))
         .pipe(postcss(postCssPlugins))
         .pipe(sourcemaps.write('.'))
-        .pipe(dest(paths.css.dest));
+        .pipe(rename((file) => {
+            file.dirname = path.join(paths.css.dest, file.dirname);
+        }))
+        .pipe(dest('.'));
 }
 
 function minifyCss() {
