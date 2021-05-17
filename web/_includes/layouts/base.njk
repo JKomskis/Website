@@ -1,3 +1,6 @@
+---
+defaultStylesheet: ../css/main.min.css
+---
 {%- if not title -%}
     {%- set title = site.title -%}
 {%- endif -%}
@@ -14,7 +17,7 @@
     <meta property="og:site_name" content="{{ site.title }}">
     <meta name="description" content="{{ description }}">
     <meta property="og:description" content="{{ description }}">
-    <link rel="stylesheet" href="/css/main.min.css" type="text/css">
+    <link rel="stylesheet" href="{{ defaultStylesheet }}" type="text/css">
     {% for stylesheet in cssStylesheets %}
         <link rel="stylesheet" href="{{ stylesheet }}" type="text/css">
     {% endfor %}
