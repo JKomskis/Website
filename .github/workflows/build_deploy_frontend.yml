@@ -18,11 +18,11 @@ jobs:
     environment: build_frontend
 
     steps:
-    - name: Set main branch deploy path suffix
+    - name: Set main branch deploy path prefix
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       run: echo "FRONTEND_DEPLOY_PATH=" >> $GITHUB_ENV
     
-    - name: Set non-main branch deploy path suffix
+    - name: Set non-main branch deploy path prefix
       if: ${{ github.event_name == 'pull_request' && github.head_ref != 'refs/heads/main' }}
       run: echo "FRONTEND_DEPLOY_PATH=${{ github.head_ref }}" >> $GITHUB_ENV
 
@@ -65,11 +65,11 @@ jobs:
     environment: build_frontend
 
     steps:
-    - name: Set main branch deploy path suffix
+    - name: Set main branch deploy path prefix
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       run: echo "FRONTEND_DEPLOY_PATH=" >> $GITHUB_ENV
     
-    - name: Set non-main branch deploy path suffix
+    - name: Set non-main branch deploy path prefix
       if: ${{ github.event_name == 'pull_request' && github.head_ref != 'refs/heads/main' }}
       run: echo "FRONTEND_DEPLOY_PATH=${{ github.head_ref }}" >> $GITHUB_ENV
 
