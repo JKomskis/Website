@@ -4,9 +4,6 @@ on:
   pull_request:
     types: [closed]
 
-env:
-  FRONTEND_DEPLOY_PATH: 'obscenecommits'
-
 jobs:
   remove_frontend_deployment:
     runs-on: ubuntu-latest
@@ -24,4 +21,4 @@ jobs:
         azPSVersion: latest
         inlineScript: |
           Set-AzCurrentStorageAccount -ResourceGroupName ${{ secrets.RESOURCE_GROUP_NAME }} -Name ${{ secrets.STORAGE_ACCOUNT_NAME }}
-          Get-AzStorageBlob -Container '$web' -Prefix "${{ env.FRONTEND_DEPLOY_PATH }}/${{ github.head_ref }}" | Remove-AzStorageBlob
+          Get-AzStorageBlob -Container '$web' -Prefix "${{ github.head_ref }}" | Remove-AzStorageBlob
