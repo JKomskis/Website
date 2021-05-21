@@ -1,5 +1,6 @@
 ---
 layout: layouts/default
+description: Joe Komskis's personal website
 ---
 <div class="homeTitle__wrapper">
     <h1 class="homeTitle__text">Joe<br>Komskis</h1>
@@ -9,7 +10,7 @@ layout: layouts/default
     <h1 class="homeSection__title">Education</h1>
     {%- for degree in education.degrees %}
         <div class="degree__wrapper">
-            <img class="degree__logo" src="{{ degree.logo }}" alt="{{ degree.logo_alt }}"></img>
+            <img class="degree__logo" src="{{ degree.logo | url }}" alt="{{ degree.logo_alt }}"></img>
             <p class="degree__school">{{ degree.school }}</p>
             <p class="degree__degree">{{ degree.degree }}</p>
             <p class="degree__location">{{ degree.location }}</p>
@@ -28,7 +29,7 @@ layout: layouts/default
     {%- for job in experience.jobs %}
         <div class="job__wrapper">
             {%- if job.logo %}
-                <img class="job__logo" src="{{ job.logo }}" alt="{{ job.logo_alt }}"></img>
+                <img class="job__logo" src="{{ job.logo | url }}" alt="{{ job.logo_alt }}"></img>
             {% elif job.shortname %}
                 <p class="job__logo">{{ job.shortname }}</p>
             {% endif -%}
@@ -51,7 +52,7 @@ layout: layouts/default
         {%- for project in projects.projects %}
             <div class="project__wrapper">
                 {%- if project.img %}
-                    <img src="{{ project.img }}" alt="{{ project.img_alt }}"></img>
+                    <img src="{{ project.img | url }}" alt="{{ project.img_alt }}"></img>
                 {% endif -%}
                 <p class="project__name">{{ project.name }}</p>
                 <p class="project__motivation">{{ project.motivation }}</p>
@@ -59,7 +60,7 @@ layout: layouts/default
                 <p class="project__summary">{{ project.summary }}</p>
                 <div class="project__linkWrapper">
                     {%- for link in project.links %}
-                        <a href="{{ link.link }}"><button type="button" class="
+                        <a href="{{ link.link | url }}"><button type="button" class="
                             {%- if link.type === 'standard' -%}
                                 button--standard
                             {%- elif link.type === 'primary' -%}

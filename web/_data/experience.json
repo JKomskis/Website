@@ -10,7 +10,7 @@
                 "Collected and analyzed log files from production machines to estimate impact and tune caching parameters",
                 "Executed test workloads before and after caching to evaluate performance improvements"
             ],
-            "logo": "assets/img/logos/microsoft.png",
+            "logo": "/assets/img/logos/microsoft.png",
             "logo_alt": "Microsoft Logo"
         },
         {
@@ -23,7 +23,7 @@
                 "Held weekly office hours to help students with assignments and projects",
                 "Organized the creation of an interface, test suite, and automatic grader for a project implementing Huffman’s Algorithm"
             ],
-            "logo": "assets/img/logos/uf.png",
+            "logo": "/assets/img/logos/uf.png",
             "logo_alt": "UF Logo"
         },
         {
@@ -48,7 +48,7 @@
                 "Demonstrated performance improvements using parallelized tests",
                 "Documented the design and implementation to facilitate understanding of the project in the future"
             ],
-            "logo": "assets/img/logos/microsoft.png",
+            "logo": "/assets/img/logos/microsoft.png",
             "logo_alt": "Microsoft Logo"
         },
         {
@@ -61,7 +61,7 @@
                 "Created a new CI/CD pipeline for deploying and reconciling forms to assist migrating to a microservices architecture",
                 "Tested and reviewed code developed by other members of my team to ensure coding standards were met"
             ],
-            "logo": "assets/img/logos/ultimate.png",
+            "logo": "/assets/img/logos/ultimate.png",
             "logo_alt": "Ultimate Software Logo"
         }
     ]
