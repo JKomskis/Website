@@ -18,6 +18,14 @@ jobs:
     environment: build_frontend
 
     steps:
+    - name: Set main branch deploy path suffix
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      run: echo "FRONTEND_DEPLOY_PATH=" >> $GITHUB_ENV
+    
+    - name: Set non-main branch deploy path suffix
+      if: ${{ github.event_name == 'pull_request' && github.head_ref != 'refs/heads/main' }}
+      run: echo "FRONTEND_DEPLOY_PATH=${{ github.head_ref }}" >> $GITHUB_ENV
+
     - uses: actions/checkout@v2
 
     - name: Cache node modules
@@ -39,7 +47,7 @@ jobs:
 
     - run: npm ci
 
-    - run: npm run build:prod
+    - run: FRONTEND_PATH_PREFIX=${{ env.FRONTEND_DEPLOY_PATH }} npm run build:prod
       env:
         OBSCENE_COMMITS_ACCOUNT_NAME: ${{ secrets.OBSCENE_COMMITS_ARCHIVE_ACCOUNT_NAME }}
         OBSCENE_COMMITS_ACCOUNT_KEY: ${{ secrets.OBSCENE_COMMITS_ARCHIVE_ACCOUNT_KEY }}
@@ -68,12 +76,20 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: dist
-        path: _site/${{ env.FRONTEND_DEPLOY_PATH }}
+        path: _site/
 
     - uses: azure/login@v1.1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
+
+    - name: Delete existing blobs
+      uses: azure/powershell@v1
+      with:
+        azPSVersion: latest
+        inlineScript: |
+          Set-AzCurrentStorageAccount -ResourceGroupName ${{ secrets.RESOURCE_GROUP_NAME }} -Name ${{ secrets.STORAGE_ACCOUNT_NAME }}
+          Get-AzStorageBlob -Container '$web' -Prefix "${{ env.FRONTEND_DEPLOY_PATH }}/${{ github.head_ref }}" | Remove-AzStorageBlob
     
     - name: Upload to blob storage
       uses: azure/powershell@v1

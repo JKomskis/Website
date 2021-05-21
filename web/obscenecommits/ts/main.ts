@@ -9,12 +9,10 @@ const infScroll = new InfiniteScroll('.commit-container', {
         const endIdx = linkTarget?.indexOf('.html') ?? 0;
         const pageNumber = parseInt(linkTarget?.substring(startIdx, endIdx) ?? '1') + 1;
 
-        const isIndexPage = !window.location.pathname.includes('page/page-');
-        if (isIndexPage) {
-            return `page/page-${pageNumber - this.loadCount - 1}.html`;
-        } else {
-            return `page-${pageNumber - this.loadCount - 1}.html`;
-        }
+        const nextPageUrl = `${linkTarget?.substring(0, startIdx)}${
+            pageNumber - 1 - this.loadCount
+        }${linkTarget?.substring(endIdx)}`;
+        return nextPageUrl;
     },
     append: '.commit__wrapper',
     history: false,

@@ -5,7 +5,7 @@ pagination:
   alias: commits
   size: 25
 permalink: "obscenecommits/{% if pagination.pageNumber < pagination.pages.length-1 %}page/page-{{ pagination.pageNumber + 1 }}.html{% else %}index.html{% endif %}"
-cssStylesheets: [ "css/main.min.css" ]
+cssStylesheets: [ "/obscenecommits/css/main.min.css" ]
 title: Obscene Commits
 subtitle: The greatest commits on GitHub
 description: The greatest commits on Github
@@ -25,8 +25,8 @@ sourceLink: https://github.com/JKomskis/ObsceneCommits
         {% endfor %}
     </div>
     <div class="pagination__navigation">
-        <a {% if pagination.href.next != null %} href="{{ pagination.href.next | makePathRelative }}" {% endif %}>Previous</a>
-        <a class="pagination__next" {% if pagination.href.previous != null %} href="{{ pagination.href.previous | makePathRelative }}" {% endif %}>Next</a>
+        <a {% if pagination.href.next != null %} href="{{ pagination.href.next | url }}" {% endif %}>Previous</a>
+        <a class="pagination__next" {% if pagination.href.previous != null %} href="{{ pagination.href.previous | url }}" {% endif %}>Next</a>
     </div>
 </main>
-<script type="module" src="{% if pagination.pageNumber < pagination.pages.length-1 %}../{% endif %}js/bundle.js"></script>
+<script type="module" src="{{ '/obscenecommits/js/bundle.js' | url }}"></script>
