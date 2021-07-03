@@ -40,6 +40,10 @@ async function compileTs() {
                 format: 'es'
             },
             plugins: [
+                replace({
+                    'process.env.API_BASE_PATH': JSON.stringify(process.env.API_BASE_PATH),
+                    preventAssignment: true
+                }),
                 rollupTypescript(),
                 nodeResolve.nodeResolve({ browser: true }),
                 commonjs({

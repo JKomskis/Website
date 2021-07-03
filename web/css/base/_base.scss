@@ -1,4 +1,6 @@
-html {
+html,
+select,
+textarea {
   font-family: $sans-font-family;
   font-size: $default-font-size;
   font-weight: $normal-font-weight;

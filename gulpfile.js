@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const { series, parallel } = require('gulp');
 const { assets } = require('./gulp/assets');
 const { clean } = require('./gulp/clean');
