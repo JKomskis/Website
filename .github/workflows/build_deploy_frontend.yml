@@ -24,7 +24,7 @@ jobs:
     
     - name: Set non-main branch deploy path prefix
       if: ${{ github.event_name == 'pull_request' && github.head_ref != 'refs/heads/main' }}
-      run: echo "FRONTEND_DEPLOY_PATH=${{ github.head_ref }}" >> $GITHUB_ENV
+      run: echo "FRONTEND_DEPLOY_PATH=staging/${{ github.head_ref }}" >> $GITHUB_ENV
 
     - uses: actions/checkout@v2
 
@@ -47,11 +47,12 @@ jobs:
 
     - run: npm ci
 
-    - run: FRONTEND_PATH_PREFIX=${{ env.FRONTEND_DEPLOY_PATH }} npm run build:prod
+    - run: npm run build:prod
       env:
         OBSCENE_COMMITS_ACCOUNT_NAME: ${{ secrets.OBSCENE_COMMITS_ARCHIVE_ACCOUNT_NAME }}
         OBSCENE_COMMITS_ACCOUNT_KEY: ${{ secrets.OBSCENE_COMMITS_ARCHIVE_ACCOUNT_KEY }}
         ARCHIVE_CONTAINER_NAME: ${{ secrets.OBSCENE_COMMITS_ARCHIVE_CONTAINER_NAME }}
+        FRONTEND_PATH_PREFIX: ${{ env.FRONTEND_DEPLOY_PATH }}
 
     - uses: actions/upload-artifact@v2
       with:
@@ -71,7 +72,7 @@ jobs:
     
     - name: Set non-main branch deploy path prefix
       if: ${{ github.event_name == 'pull_request' && github.head_ref != 'refs/heads/main' }}
-      run: echo "FRONTEND_DEPLOY_PATH=${{ github.head_ref }}" >> $GITHUB_ENV
+      run: echo "FRONTEND_DEPLOY_PATH=staging/${{ github.head_ref }}" >> $GITHUB_ENV
 
     - uses: actions/download-artifact@v2
       with:
@@ -83,13 +84,13 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
         enable-AzPSSession: true
 
-    - name: Delete existing blobs
-      uses: azure/powershell@v1
-      with:
-        azPSVersion: latest
-        inlineScript: |
-          Set-AzCurrentStorageAccount -ResourceGroupName ${{ secrets.RESOURCE_GROUP_NAME }} -Name ${{ secrets.STORAGE_ACCOUNT_NAME }}
-          Get-AzStorageBlob -Container '$web' -Prefix "${{ env.FRONTEND_DEPLOY_PATH }}/${{ github.head_ref }}" | Remove-AzStorageBlob
+    # - name: Delete existing blobs
+    #   uses: azure/powershell@v1
+    #   with:
+    #     azPSVersion: latest
+    #     inlineScript: |
+    #       Set-AzCurrentStorageAccount -ResourceGroupName ${{ secrets.RESOURCE_GROUP_NAME }} -Name ${{ secrets.STORAGE_ACCOUNT_NAME }}
+    #       Get-AzStorageBlob -Container '$web' -Prefix "${{ env.FRONTEND_DEPLOY_PATH }}" | Remove-AzStorageBlob
     
     - name: Upload to blob storage
       uses: azure/powershell@v1

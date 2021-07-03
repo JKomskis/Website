@@ -9,7 +9,6 @@ env:
   AZURE_FUNCTIONAPP_NAME: obscenecommits # set this to your application's name
   AZURE_FUNCTIONAPP_PACKAGE_PATH: 'backend/obscenecommits' # set this to the path to your web app project, defaults to the repository root
   NODE_VERSION: '14.x'
-  FRONTEND_DEPLOY_PATH: 'obscenecommits'
 
 jobs:
   build_and_deploy:
