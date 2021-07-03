@@ -21,16 +21,16 @@ function sortBySpecificity(file1, file2) {
 }
 
 function revision() {
-    return src(`${paths.dest}/**/*.{css,js,woff2,jpg,png,svg}`)
+    return src(`${paths.baseOutputDir}/**/*.{css,js,woff2,jpg,png,svg}`)
         .pipe(rev())
         .pipe(revdel())
-        .pipe(dest(paths.dest))
+        .pipe(dest(paths.baseOutputDir))
         .pipe(rev.manifest())
-        .pipe(dest(paths.dest));
+        .pipe(dest(paths.baseOutputDir));
 }
 
 function rewrite() {
-    const manifest = JSON.parse(readFileSync(`${paths.dest}/rev-manifest.json`));
+    const manifest = JSON.parse(readFileSync(`${paths.baseOutputDir}/rev-manifest.json`));
 
     const keys = Object.keys(manifest);
     keys.sort(sortBySpecificity);
