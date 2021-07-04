@@ -20,6 +20,9 @@ jobs:
     environment: build_frontend
 
     steps:
+    - name: Dump Event Details
+      run: echo $GITHUB_EVENT_PATH
+
     - name: Set main branch deploy path prefix
       if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'schedule'}}
       run: echo "FRONTEND_DEPLOY_PATH=" >> $GITHUB_ENV
@@ -29,6 +32,10 @@ jobs:
       run: echo "FRONTEND_DEPLOY_PATH=staging/${{ github.head_ref }}" >> $GITHUB_ENV
 
     - uses: actions/checkout@v2
+
+    - name: Get current time
+      uses: 1466587594/get-current-time@v2
+      id: current-time
 
     - name: Cache node modules
       uses: actions/cache@v2
@@ -41,6 +48,23 @@ jobs:
           ${{ runner.os }}-build-${{ env.cache-name }}-
           ${{ runner.os }}-build-
           ${{ runner.os }}-
+
+    - name: Cache Archives
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-archives-v1
+        YEAR: "${{ steps.current-time.outputs.year }}"
+        MONTH: "${{ steps.current-time.outputs.month }}"
+        DAY: "${{ steps.current-time.outputs.day }}"
+        HOUR: "${{ steps.current-time.outputs.hour }}"
+      with:
+        path: archives
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ env.YEAR }}-${{ env.MONTH }}-${{ env.DAY }}-${{ env.HOUR }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-${{ env.YEAR }}-${{ env.MONTH }}-${{ env.DAY }}-
+          ${{ runner.os }}-build-${{ env.cache-name }}-${{ env.YEAR }}-${{ env.MONTH }}-
+          ${{ runner.os }}-build-${{ env.cache-name }}-${{ env.YEAR }}-
+          ${{ runner.os }}-build-${{ env.cache-name }}-
 
     - name: Use Node.js ${{ env.NODE_VERSION }}
       uses: actions/setup-node@v1

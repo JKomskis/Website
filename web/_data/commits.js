@@ -26,8 +26,6 @@ function getBlobName(timestamp) {
 function getContainerClient() {
     const account = process.env.OBSCENE_COMMITS_ACCOUNT_NAME || '';
     const container = process.env.ARCHIVE_CONTAINER_NAME || '';
-    console.log('account: ' + process.env.OBSCENE_COMMITS_ACCOUNT_NAME);
-    console.log('container: ' + process.env.ARCHIVE_CONTAINER_NAME);
     const anonymousCredential = new AnonymousCredential();
 
     const blobClient = new BlobServiceClient(
