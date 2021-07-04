@@ -26,7 +26,7 @@ function revision() {
         .pipe(revdel())
         .pipe(dest(paths.dest))
         .pipe(rev.manifest())
-        .pipe(dest(paths.dest));
+        .pipe(dest(paths.dest)); 
 }
 
 function rewrite() {
