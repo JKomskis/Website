@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const { StorageSharedKeyCredential, BlobServiceClient } = require('@azure/storage-blob');
+const { BlobServiceClient, AnonymousCredential } = require('@azure/storage-blob');
 const { mkdir } = require('fs/promises');
 const { createReadStream, unlinkSync, readdirSync, rmdirSync } = require('fs');
 const { createGunzip } = require('zlib');
@@ -25,14 +25,13 @@ function getBlobName(timestamp) {
 
 function getContainerClient() {
     const account = process.env.OBSCENE_COMMITS_ACCOUNT_NAME || '';
-    const accountKey = process.env.OBSCENE_COMMITS_ACCOUNT_KEY || '';
     const container = process.env.ARCHIVE_CONTAINER_NAME || '';
-    const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
+    const anonymousCredential = new AnonymousCredential();
 
     const blobClient = new BlobServiceClient(
         // When using AnonymousCredential, following url should include a valid SAS or support public access
         `https://${account}.blob.core.windows.net`,
-        sharedKeyCredential,
+        anonymousCredential,
     );
 
     return blobClient.getContainerClient(container);

@@ -1,4 +1,4 @@
-name: Build and Deploy Obscene Commits Backend
+name: Build and Deploy Language Garbler Backend
 
 on:
   push:
@@ -6,8 +6,8 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_FUNCTIONAPP_NAME: obscenecommits # set this to your application's name
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'backend/obscenecommits' # set this to the path to your web app project, defaults to the repository root
+  AZURE_FUNCTIONAPP_NAME: languagegarbler # set this to your application's name
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: 'backend/languagegarbler' # set this to the path to your web app project, defaults to the repository root
   NODE_VERSION: '14.x'
 
 jobs:
