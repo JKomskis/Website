@@ -2,7 +2,6 @@ const { series, src, dest } = require('gulp');
 const rename = require('gulp-rename');
 const sourcemaps = require('gulp-sourcemaps');
 const sass = require('gulp-sass');
-const Fiber = require('fibers');
 sass.compiler = require('sass');
 const postcss = require('gulp-postcss');
 const cssnano = require('cssnano');
@@ -27,7 +26,7 @@ function compileCss() {
     ];
     return src(paths.css.src)
         .pipe(sourcemaps.init())
-        .pipe(sass({ fiber: Fiber }).on('error', sass.logError))
+        .pipe(sass.sync().on('error', sass.logError))
         .pipe(postcss(postCssPlugins))
         .pipe(sourcemaps.write('.'))
         .pipe(rename((file) => {
