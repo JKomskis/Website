@@ -13,7 +13,7 @@ env:
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
-    environment: build_${{ AZURE_FUNCTIONAPP_NAME }}
+    environment: build_${{ env.AZURE_FUNCTIONAPP_NAME }}
 
     steps:
     - uses: actions/checkout@main

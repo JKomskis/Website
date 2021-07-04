@@ -13,7 +13,9 @@
 The following environmental variables are used:
 
 * `API_BASE_PATH` - Used when building the website. Specifies the base path for languagegarbler API requests.
-* `FRONTEND_PATH_PREFIX` - Used when building the website. Specifies the path under which the website will be built.
+* `OBSCENE_COMMITS_ACCOUNT_NAME` - Used when building the website. Specifies the account name where the ObsceneCommits archives are stored.
+* `ARCHIVE_CONTAINER_NAME` - Used when building the website. Specifies the container name where the ObsceneCommits archives are stored.
+* `FRONTEND_PATH_PREFIX` (Optional) - Used when building the website. Specifies the path under which the website will be built.
 
 ## Todo List
 

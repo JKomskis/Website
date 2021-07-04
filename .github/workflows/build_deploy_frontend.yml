@@ -11,8 +11,8 @@ on:
 
 env:
   NODE_VERSION: '14.x'
-  OBSCENE_COMMITS_ACCOUNT_NAME: obscenecommits
-  ARCHIVE_CONTAINER_NAME: archives
+  OBSCENE_COMMITS_ACCOUNT_NAME: 'obscenecommits'
+  ARCHIVE_CONTAINER_NAME: 'archives'
 
 jobs:
   build:
