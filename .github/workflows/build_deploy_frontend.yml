@@ -23,6 +23,9 @@ jobs:
     - name: Dump Event Details
       run: cat $GITHUB_EVENT_PATH
 
+    - name: Dump Event Details
+      run: echo ${{ github.event.pull_request.user.login }}
+
     - name: Set main branch deploy path prefix
       if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'schedule'}}
       run: echo "FRONTEND_DEPLOY_PATH=" >> $GITHUB_ENV
@@ -84,7 +87,7 @@ jobs:
 
   deploy:
     needs: build
-    if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.head_ref != 'refs/heads/main') || github.event_name == 'schedule' }}
+    if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.head_ref != 'refs/heads/main' && github.event.pull_request.user.login != 'dependabot[bot]') || github.event_name == 'schedule' }}
     runs-on: ubuntu-latest
     environment: build_frontend
 
