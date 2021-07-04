@@ -1,12 +1,10 @@
-.header {
+.side-project-header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin: 0.5rem 0;
-}
 
-.return-link {
-  &__arrow {
+  &__return-link-arrow {
     transform: rotate(-180deg);
     width: 0.875em;
   }

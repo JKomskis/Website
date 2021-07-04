@@ -8,7 +8,7 @@ module.exports = function () {
         rightArrow: fa.icon(
             { prefix: 'fas', iconName: 'arrow-right' },
             {
-                classes: ['return-link__arrow'],
+                classes: ['side-project-header__return-link-arrow'],
             },
         ).html[0],
     };
