@@ -21,7 +21,7 @@ jobs:
 
     steps:
     - name: Dump Event Details
-      run: echo $GITHUB_EVENT_PATH
+      run: cat $GITHUB_EVENT_PATH
 
     - name: Set main branch deploy path prefix
       if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'schedule'}}
