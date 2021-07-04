@@ -111,7 +111,6 @@ module.exports = async function () {
     console.log('Creating commit list');
     await makeArchiveFolder();
     await downloadArchives();
-    // TODO: cleanup old archives
 
     let commits = [];
     for (const archive of await getDownloadedFiles()) {

@@ -1,11 +1,5 @@
 .button--standard {
   @include button;
-  background-color: $standard-button-color;
-  border-color: $border-color;
-
-  &:hover {
-    background-color: $standard-button-checked-color;
-  }
 }
 
 .button--primary {
@@ -26,9 +20,4 @@
   border: 0;
   color: $secondary-text-color;
   cursor: default;
-
-  &:hover {
-    background-color: $button-disabled-color;
-    border: 0;
-  }
 }
