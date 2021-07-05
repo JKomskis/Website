@@ -94,6 +94,8 @@ jobs:
       if: ${{ github.event_name == 'pull_request' && github.head_ref != 'refs/heads/main' }}
       run: echo "FRONTEND_DEPLOY_PATH=staging/${{ github.head_ref }}" >> $GITHUB_ENV
 
+    - uses: actions/checkout@v2
+
     - uses: actions/download-artifact@v2
       with:
         name: dist
@@ -117,5 +119,5 @@ jobs:
       with:
         azPSVersion: latest
         inlineScript: |
-          ./scripts/upload_blobs.ps1 ${{ secrets.RESOURCE_GROUP_NAME }} ${{ secrets.STORAGE_ACCOUNT_NAME }}
+          & "${{ github.workspace }}/scripts/upload_blobs.ps1" ${{ secrets.RESOURCE_GROUP_NAME }} ${{ secrets.STORAGE_ACCOUNT_NAME }}
 
