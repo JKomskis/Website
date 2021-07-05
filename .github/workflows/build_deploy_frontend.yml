@@ -119,5 +119,5 @@ jobs:
       with:
         azPSVersion: latest
         inlineScript: |
-          & "${{ github.workspace }}/scripts/upload_blobs.ps1" ${{ secrets.RESOURCE_GROUP_NAME }} ${{ secrets.STORAGE_ACCOUNT_NAME }}
+          & "${{ github.workspace }}/scripts/upload_blobs.ps1" ${{ secrets.RESOURCE_GROUP_NAME }} ${{ secrets.STORAGE_ACCOUNT_NAME }} ${{ env.FRONTEND_DEPLOY_PATH }}
 
