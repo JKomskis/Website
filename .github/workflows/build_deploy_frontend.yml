@@ -13,6 +13,7 @@ env:
   NODE_VERSION: '14.x'
   OBSCENE_COMMITS_ACCOUNT_NAME: 'obscenecommits'
   ARCHIVE_CONTAINER_NAME: 'archives'
+  LG_API_BASE_PATH: 'https://languagegarbler.jkomskis.com'
 
 jobs:
   build:

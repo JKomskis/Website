@@ -34,7 +34,7 @@ class LanguagePath extends LightDomLitElement {
     addStepHtml: string;
     spinnerHtml: string;
 
-    apiBasePath = process.env.API_BASE_PATH;
+    apiBasePath = process.env.LG_API_BASE_PATH;
     apiTranslatePath = '/api/translate';
 
     constructor() {

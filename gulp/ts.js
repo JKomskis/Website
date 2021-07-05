@@ -41,7 +41,7 @@ async function compileTs() {
             },
             plugins: [
                 replace({
-                    'process.env.API_BASE_PATH': JSON.stringify(process.env.API_BASE_PATH),
+                    'process.env.LG_API_BASE_PATH': JSON.stringify(process.env.LG_API_BASE_PATH),
                     preventAssignment: true
                 }),
                 rollupTypescript(),
