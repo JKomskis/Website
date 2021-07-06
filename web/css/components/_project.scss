@@ -5,11 +5,7 @@
   flex-direction: column;
   height: auto;
   margin: 1rem;
-  width: 100%;
-  @include respond-to('large') {
-    max-width: 25rem;
-    width: fit-content;
-  }
+  width: auto;
 }
 
 .project__name {
@@ -25,6 +21,10 @@
 
 .project__linkWrapper {
   margin-top: auto;
+}
+
+.project__link {
+  margin-top: 0.5rem;
 }
 
 .project__startEndDate {

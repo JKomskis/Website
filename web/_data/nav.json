@@ -5,6 +5,10 @@
             "href": "/"
         },
         {
+            "name": "Projects",
+            "href": "/projects"
+        },
+        {
             "name": "Reading List",
             "href": "/reading-list"
         },

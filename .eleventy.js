@@ -3,7 +3,7 @@ module.exports = function (eleventyConfig) {
         return value.replace('\n', '<br>');
     });
 
-    eleventyConfig.addFilter("getCdnUrl", function (value) {
+    eleventyConfig.addFilter("cdnUrl", function (value) {
         return `${site.cdnUrl}/${value}`;
     });
 

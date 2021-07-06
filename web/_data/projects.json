@@ -2,13 +2,95 @@
     "projects": [
         {
             "name": "This Website",
-            "summary": "My personal, static website.",
+            "summary": "My personal, mostly static website.",
             "startEndDate": "Since March 2018",
             "motivation": "Personal Project",
             "links": [
                 {
                     "text": "Source Code",
                     "link": "https://github.com/JKomskis/Website",
+                    "type": "standard"
+                }
+            ]
+        },
+        {
+            "name": "ObsceneCommits",
+            "summary": "A static website of GitHub's greatest commits.",
+            "startEndDate": "Since January 2021",
+            "motivation": "Personal Project",
+            "links": [
+                {
+                    "text": "Source Code",
+                    "link": "https://github.com/JKomskis/Website/tree/main/web/obscenecommits",
+                    "type": "standard"
+                },
+                {
+                    "text": "Demo",
+                    "link": "/obscenecommits",
+                    "type": "primary"
+                }
+            ]
+        },
+        {
+            "name": "LanguageGarbler",
+            "summary": "A website that uses language translation APIs to translate text through multiple languages at a time.",
+            "startEndDate": "Since December 2016",
+            "motivation": "Personal Project",
+            "links": [
+                {
+                    "text": "Source Code",
+                    "link": "https://github.com/JKomskis/Website/tree/main/web/languagegarbler",
+                    "type": "standard"
+                },
+                {
+                    "text": "Demo",
+                    "link": "/languagegarbler",
+                    "type": "primary"
+                }
+            ]
+        },
+        {
+            "name": "Video Logging And Recovery",
+            "summary": "Project that explores optimizing logging and recovery of video data in a DBMS.",
+            "startEndDate": "January 2021 - June 2021",
+            "motivation": "CS8803-DSI Database Systems Implementation Part 2: Term Project",
+            "links": [
+                {
+                    "text": "Source Code",
+                    "link": "https://github.com/JKomskis/VideoLoggingAndRecovery",
+                    "type": "standard"
+                },
+                {
+                    "text": "Final Presentation",
+                    "link": "https://cdn.jkomskis.com/uploads/VideoLoggingAndRecovery/VideoLoggingAndRecovery-FinalPresentation.pdf",
+                    "type": "primary"
+                },
+                {
+                    "text": "Final Report",
+                    "link": "https://cdn.jkomskis.com/uploads/VideoLoggingAndRecovery/VideoLoggingAndRecovery-FinalReport.pdf",
+                    "type": "standard"
+                }
+            ]
+        },
+        {
+            "name": "Spacial Database Bench",
+            "summary": "Project that benchmarks spacial functions in MySQL and Postgres+PostGIS.",
+            "startEndDate": "August 2020 - December 2020",
+            "motivation": "CS6400 Database Systems Concepts and Design: Term Project",
+            "links": [
+                {
+                    "text": "Source Code",
+                    "link": "https://github.com/AlonFischer/SpatialDatabaseBench",
+                    "type": "standard"
+                },
+                {
+                    "text": "Final Presentation",
+                    "link": "https://cdn.jkomskis.com/uploads/SpatialDatabaseBench/SpatialDatabaseBench-FinalPresentation.pdf",
+                    "type": "primary"
+                },
+                {
+                    "text": "Project Proposal",
+                    "link": "https://cdn.jkomskis.com/uploads/SpatialDatabaseBench/SpatialDatabaseBench-Proposal.pdf",
                     "type": "standard"
                 }
             ]
@@ -25,10 +107,14 @@
                     "type": "standard"
                 },
                 {
-                    "text": "Design Document",
-                    "link": "",
-                    "type": "primary",
-                    "disabled": "true"
+                    "text": "Final Presentation",
+                    "link": "https://cdn.jkomskis.com/uploads/MulticloudFailover/MulticloudFailover-FinalPresentation.pdf",
+                    "type": "primary"
+                },
+                {
+                    "text": "Final Report",
+                    "link": "https://cdn.jkomskis.com/uploads/MulticloudFailover/MulticloudFailover-FinalReport.pdf",
+                    "type": "standard"
                 }
             ]
         },
@@ -132,24 +218,6 @@
                     "text": "Source Code",
                     "link": "https://github.com/JKomskis/GameOfLife",
                     "type": "standard"
-                }
-            ]
-        },
-        {
-            "name": "LanguageGarbler",
-            "summary": "A website that uses language translation APIs to translate text through multiple languages at a time.",
-            "startEndDate": "December 2016 - May 2018",
-            "motivation": "Personal Project",
-            "links": [
-                {
-                    "text": "Source Code",
-                    "link": "https://github.com/JKomskis/LanguageGarbler",
-                    "type": "standard"
-                },
-                {
-                    "text": "Demo",
-                    "link": "/languagegarbler/",
-                    "type": "primary"
                 }
             ]
         }

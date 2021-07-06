@@ -1,6 +1,6 @@
 # LanguageGarbler
 
-Static website that can translate text through multiple languages at a time.
+A website that uses language translation APIs to translate text through multiple languages at a time.
 
 ## Usage
 

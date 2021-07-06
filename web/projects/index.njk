@@ -1,0 +1,30 @@
+---
+layout: layouts/default
+title: Projects
+description: Things I've worked on
+---
+<h1 class="homeSection__title">Projects</h1>
+<div class="projects__wrapper">
+    {%- for project in projects.projects %}
+        <div class="project__wrapper">
+            {%- if project.img %}
+                <img src="{{ project.img | url }}" alt="{{ project.img_alt }}"></img>
+            {% endif -%}
+            <p class="project__name">{{ project.name }}</p>
+            <p class="project__motivation">{{ project.motivation }}</p>
+            <p class="project__startEndDate">{{ project.startEndDate }}</p>
+            <p class="project__summary">{{ project.summary }}</p>
+            <div class="project__linkWrapper">
+                {%- for link in project.links %}
+                    <a href="{{ link.link | url }}"><button type="button" class="project__link
+                        {%- if link.type === 'standard' %}
+                            button--standard
+                        {%- elif link.type === 'primary' %}
+                            button--primary
+                        {%- endif -%}
+                    {%- if link.disabled %} button--disabled {%- endif -%}">{{ link.text }}</button></a>
+                {% endfor -%}
+            </div>
+        </div>
+    {% endfor -%}
+</div>
