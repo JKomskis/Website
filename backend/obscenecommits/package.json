@@ -13,7 +13,7 @@
     "@azure/storage-blob": "^12.5.0",
     "@azure/storage-queue": "^12.4.0",
     "node-fetch": "^2.6.1",
-    "split2": "^3.2.2",
+    "split2": "^4.1.0",
     "through2-filter": "^3.0.0"
   },
   "devDependencies": {
