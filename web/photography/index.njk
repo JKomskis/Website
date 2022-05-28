@@ -1,0 +1,11 @@
+---
+layout: layouts/default
+title: Photography
+description: Amateur pictures with whatever semi-cheap gear I can get my hands on.
+---
+<h1 class="homeSection__title">{{ title }}</h1>
+<div class="albums__wrapper">
+    {% for album in albums %}
+        {% include "components/photography/album_preview.njk" %}
+    {% endfor %}
+</div>

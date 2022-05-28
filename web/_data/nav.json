@@ -19,6 +19,10 @@
         {
             "name": "Resume",
             "href": "https://jkomskisstatic.blob.core.windows.net/uploads/resume-joseph-komskis.pdf"
+        },
+        {
+            "name": "Photography",
+            "href": "/photography"
         }
     ],
     "links": [

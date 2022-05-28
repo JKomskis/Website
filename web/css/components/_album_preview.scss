@@ -1,0 +1,43 @@
+.album-preview__wrapper {
+  @include card;
+  
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  margin: 1rem;
+  max-width: 100%;
+  width: auto;
+}
+  
+.album-preview__name {
+  font-size: $headline-font-size;
+  font-weight: $semibold-font-weight;
+  margin: 0;
+}
+
+.album-preview__icon {
+  display: inline-block;
+  font-size: $headline-font-size;
+  vertical-align: middle;
+  width: $headline-font-size;
+}
+
+.album-preview__images {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.album-preview__image-holder {
+  flex: 1 1 auto;
+  margin: 0.2rem;
+}
+
+.album-preview__image {
+  // display: block;
+  // height: 16rem;
+  // min-width: 100%;
+  // object-fit: cover;
+  // transition-duration: 300ms;
+  max-width: 100%;
+}

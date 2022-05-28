@@ -32,3 +32,12 @@ button {
   font-family: $sans-font-family;
   font-size: $default-font-size;
 }
+
+.height-100p {
+  height: 100%;
+}
+
+.noscroll {
+  overflow-y: hidden;
+  // position: fixed;
+}

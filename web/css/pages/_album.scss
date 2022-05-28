@@ -1,0 +1,98 @@
+// .album__wrapper {
+// }
+
+.album__picture-holder {
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.album__picture {
+  cursor: pointer;
+  object-fit: cover;
+}
+
+.album__selected-image-background {
+  background-color: #000;
+  bottom: 0;
+  left: 0;
+  opacity: 0.9;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 1;
+}
+
+@mixin album-button {
+  background: none;
+  border-width: 0;
+  color: $background-color;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  z-index: 3;
+}
+
+.album__selected-image-close {
+  @include album-button;
+  position: fixed;
+  right: 0;
+  top: 0;
+
+  &:hover {
+    color: $light-background-color;
+  }
+}
+
+.album__selected-image-prev {
+  @include album-button;
+  left: 0;
+  position: fixed;
+  top: calc(50vh - 37px);
+  transform: rotate(180deg);
+
+  &:disabled {
+    color: $text-color;
+    cursor: default;
+
+    &:hover {
+      color: $text-color;
+      cursor: default;
+    }
+  }
+
+  &:hover {
+    color: $light-background-color;
+  }
+}
+
+.album__selected-image-next {
+  @include album-button;
+  position: fixed;
+  right: 0;
+  top: calc(50vh - 37px);
+
+  &:disabled {
+    color: $text-color;
+    cursor: default;
+
+    &:hover {
+      color: $text-color;
+      cursor: default;
+    }
+  }
+
+  &:hover {
+    color: $light-background-color;
+  }
+}
+
+.album__fullpicture {
+  // bottom: 0;
+  box-sizing: border-box;
+  height: 100vh;
+  object-fit: contain;
+  opacity: 1;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: 2;
+}

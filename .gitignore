@@ -12,3 +12,6 @@ archives
 
 # Environmental files
 .env
+
+# Eleventy cache folder
+.cache

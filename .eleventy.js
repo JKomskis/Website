@@ -1,10 +1,17 @@
+const { library, icon, findIconDefinition } = require('@fortawesome/fontawesome-svg-core');
+const { fas } = require('@fortawesome/free-solid-svg-icons');
+const cdnUrl = require('./util/cdnUrl');
+const imageShortcode = require('./util/asyncImageShortcode');
+
+library.add(fas);
+
 module.exports = function (eleventyConfig) {
     eleventyConfig.addFilter("addLineBreaks", function (value) {
         return value.replace('\n', '<br>');
     });
 
     eleventyConfig.addFilter("cdnUrl", function (value) {
-        return `${site.cdnUrl}/${value}`;
+        return cdnUrl(value);
     });
 
     eleventyConfig.addFilter("removeLineBreak", (value) => {
@@ -43,6 +50,30 @@ module.exports = function (eleventyConfig) {
         }
         return value;
     });
+
+    eleventyConfig.addFilter("stem", function(value) {
+        return value.substr(0, value.indexOf('.'));
+    });
+
+    eleventyConfig.addNunjucksShortcode("faIcon", function(value) {
+        const iconDef = findIconDefinition({ prefix: 'fas', iconName: value });
+        const iconSize = 16;
+        return icon(
+            iconDef,
+            {
+                transform: {
+                    size: iconSize,
+                },
+                classes: "height-100p"
+            },
+        ).html[0];
+    });
+
+    eleventyConfig.addFilter("jsonString", function(value) {
+        return JSON.stringify(value);
+    });
+
+    eleventyConfig.addNunjucksAsyncShortcode("image", imageShortcode);
 
     let pathPrefix = process.env.FRONTEND_PATH_PREFIX || "/";
     if(pathPrefix.startsWith("/")) {

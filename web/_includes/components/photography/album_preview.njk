@@ -1,0 +1,15 @@
+<a href="{{ ('/photography/' + album.path + '/') | url }}">
+<div class="album-preview__wrapper">
+    <h2 class="album-preview__name">{{ album.name }}
+        <span class="album-preview__icon">{% faIcon "arrow-right" %}
+        </span>
+    </h2>
+    <div class="album-preview__images">
+        {% for picture in album.pictures %}
+            <div class="album-preview__image-holder">
+                <img class="album-preview__image" src="{{ picture.url | url }}">
+            </div>
+        {% endfor %}
+    </div>
+</div>
+</a>

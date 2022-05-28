@@ -5,6 +5,7 @@
 @import 'base/base';
 @import 'base/typography';
 
+@import 'components/album_preview';
 @import 'components/button';
 @import 'components/degree';
 @import 'components/job';
@@ -14,5 +15,6 @@
 @import 'layouts/main';
 @import 'layouts/nav';
 
+@import 'pages/album';
 @import 'pages/home';
 @import 'pages/projects';

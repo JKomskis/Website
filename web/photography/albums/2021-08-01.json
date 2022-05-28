@@ -1,0 +1,65 @@
+{
+    "name": "August 2021",
+    "location": "Unspecified location, Georgia",
+    "path": "aug2021",
+    "pictures": [
+        {
+            "name": "001.JPG",
+            "description": "Sunflower",
+            "camera": "Sony NEX-5",
+            "lens": "Nikon AIS 50mm f/1.8",
+            "preview": true
+        },
+        {
+            "name": "002.JPG",
+            "description": "Sunflower",
+            "camera": "Sony NEX-5",
+            "lens": "Nikon AIS 50mm f/1.8"
+        },
+        {
+            "name": "003.JPG",
+            "description": "Linzi",
+            "camera": "Sony NEX-5",
+            "lens": "Nikon AIS 50mm f/1.8"
+        },
+        {
+            "name": "004.JPG",
+            "description": "Cherry Tomato",
+            "camera": "Sony NEX-5",
+            "lens": "Nikon AIS 50mm f/1.8"
+        },
+        {
+            "name": "005.JPG",
+            "description": "Linzi",
+            "camera": "Sony NEX-5",
+            "lens": "Nikon AIS 50mm f/1.8",
+            "preview": true
+        },
+        {
+            "name": "006.JPG",
+            "description": "Hydrangea blossom",
+            "camera": "Sony NEX-5",
+            "lens": "Nikon AIS 50mm f/1.8",
+            "preview": true
+        },
+        {
+            "name": "007.JPG",
+            "description": "Sundial and wasp (I think?)",
+            "camera": "Sony NEX-5",
+            "lens": "Nikon AIS 50mm f/1.8",
+            "preview": true
+        },
+        {
+            "name": "008.JPG",
+            "description": "Maple branch",
+            "camera": "Sony NEX-5",
+            "lens": "Nikon AIS 50mm f/1.8"
+        },
+        {
+            "name": "009.JPG",
+            "description": "Stripped bark",
+            "camera": "Sony NEX-5",
+            "lens": "Nikon AIS 50mm f/1.8"
+        }
+    ]
+}

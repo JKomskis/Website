@@ -1,0 +1,22 @@
+---
+layout: layouts/default
+pagination:
+    data: albums
+    size: 1
+    alias: album
+permalink: photography/{{ album.path }}/index.html
+eleventyComputed:
+    title: "{{ album.name }}"
+---
+<h1 class="homeSection__title">{{ title }}</h1>
+{# <photo-gallery images='[{"url": "{{ ('photography/' + album.path + '/001.JPG') | cdnUrl }}", "width": 100, "height": 100}]'></photo-gallery> #}
+<photo-gallery images='{{ album.pictures | jsonString }}'></photo-gallery>
+{# <div class="album__wrapper">
+    {% for picture in album.pictures %}
+        <div class="album__picture-holder">
+            <img class="album__picture" src="{{ ('photography/' + album.path + '/' + picture.name) | cdnUrl }}" alt="{{ picture.description }}">
+        </div>
+    {% endfor %}
+</div> #}
+
+<script type="module" src="{{ '/photography/js/bundle.js' | url }}"></script>
