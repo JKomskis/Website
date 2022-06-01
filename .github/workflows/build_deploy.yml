@@ -1,4 +1,4 @@
-name: Build and Deploy Frontend
+name: Build and Deploy
 
 on:
   push:
@@ -11,20 +11,114 @@ on:
 
 env:
   NODE_VERSION: '14.x'
-  OBSCENE_COMMITS_ACCOUNT_NAME: 'obscenecommits'
-  ARCHIVE_CONTAINER_NAME: 'archives'
-  LG_API_BASE_PATH: 'https://languagegarbler.jkomskis.com'
+  OBSCENE_COMMITS_CONTAINER_NAME: 'obscene_commits_archives'
+  INFRASTRUCTURE_FOLDER: './infrastructure/website'
+  # LG_API_BASE_PATH: 'https://languagegarbler.jkomskis.com'
 
 jobs:
-  build:
+  create_resources:
+    if: ${{ github.event_name != 'schedule' }}
+    # Based on https://github.com/marketplace/actions/hashicorp-setup-terraform
     runs-on: ubuntu-latest
-    environment: build_frontend
+    environment: deploy
+
+    env:
+      ARM_CLIENT_ID: ${{secrets.ARM_CLIENT_ID}}
+      ARM_CLIENT_SECRET: ${{secrets.ARM_CLIENT_SECRET}}
+      ARM_SUBSCRIPTION_ID: ${{secrets.ARM_SUBSCRIPTION_ID}}
+      ARM_TENANT_ID: ${{secrets.ARM_TENANT_ID}}
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: hashicorp/setup-terraform@v2
+    - name: Terraform fmt
+      id: fmt
+      run: terraform fmt -check
+      continue-on-error: true
+      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}
+
+    - name: Terraform Init
+      id: init
+      run: terraform init
+      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}
+
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate -no-color
+      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}
+
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan -no-color
+      continue-on-error: true
+      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}
+
+    - uses: actions/github-script@v6
+      if: github.event_name == 'pull_request'
+      env:
+        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          // 1. Retrieve existing bot comments for the PR
+          const { data: comments } = await github.rest.issues.listComments({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+          })
+          const botComment = comments.find(comment => {
+            return comment.user.type === 'Bot' && comment.body.includes('Terraform Format and Style')
+          })
+
+          // 2. Prepare format of the comment
+          const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+          #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+          #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+          <details><summary>Validation Output</summary>
+
+          \`\`\`\n
+          ${{ steps.validate.outputs.stdout }}
+          \`\`\`
+
+          </details>
+
+          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+
+          <details><summary>Show Plan</summary>
+
+          \`\`\`\n
+          ${process.env.PLAN}
+          \`\`\`
+
+          </details>
+
+          *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.tf_actions_working_dir }}\`, Workflow: \`${{ github.workflow }}\`*`;
+
+          // 3. If we have a comment, update it, otherwise create a new one
+          if (botComment) {
+            github.rest.issues.updateComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: botComment.id,
+              body: output
+            })
+          } else {
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+          }
+
+  build_frontend:
+    runs-on: ubuntu-latest
 
     steps:
     - name: Set main branch deploy path prefix
       if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'schedule'}}
       run: echo "FRONTEND_DEPLOY_PATH=" >> $GITHUB_ENV
-    
+
     - name: Set non-main branch deploy path prefix
       if: ${{ github.event_name == 'pull_request' && github.head_ref != 'refs/heads/main' }}
       run: echo "FRONTEND_DEPLOY_PATH=staging/${{ github.head_ref }}" >> $GITHUB_ENV
@@ -81,16 +175,16 @@ jobs:
         path: _site/
 
   deploy:
-    needs: build
+    needs: [create_resources, build_frontend]
     if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.head_ref != 'refs/heads/main' && github.event.pull_request.user.login != 'dependabot[bot]') || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
-    environment: build_frontend
+    environment: build
 
     steps:
     - name: Set main branch deploy path prefix
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       run: echo "FRONTEND_DEPLOY_PATH=" >> $GITHUB_ENV
-    
+
     - name: Set non-main branch deploy path prefix
       if: ${{ github.event_name == 'pull_request' && github.head_ref != 'refs/heads/main' }}
       run: echo "FRONTEND_DEPLOY_PATH=staging/${{ github.head_ref }}" >> $GITHUB_ENV

@@ -12,3 +12,8 @@ archives
 
 # Environmental files
 .env
+
+# Terraform intermediate files
+.terraform
+.terraform.lock.hcl
+terraform.tfstate
