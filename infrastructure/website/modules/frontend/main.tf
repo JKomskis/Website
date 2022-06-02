@@ -28,8 +28,8 @@ resource "azurerm_storage_account" "this" {
 
 resource "cloudflare_record" "www" {
   zone_id = local.zone_id
-  name    = "www${var.deployment_prefix == "" ? "" : ".${var.deployment_prefix}"}"
-  value   = azurerm_storage_account.this.primary_web_endpoint
+  name    = "www${terraform.workspace == "prod" ? "" : ".${terraform.workspace}"}"
+  value   = azurerm_storage_account.this.primary_web_host
   type    = "CNAME"
   proxied = true
 }

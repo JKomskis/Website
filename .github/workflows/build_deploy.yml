@@ -32,11 +32,11 @@ jobs:
     steps:
     - name: Main branch deployment prefix
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-      run: echo "DEPLOYMENT_PREFIX=" >> $GITHUB_ENV
+      run: echo "DEPLOYMENT_NAME=prod" >> $GITHUB_ENV
 
     - name: Non-main branch deployment prefix
       if: ${{ github.event_name == 'pull_request' }}
-      run: echo "DEPLOYMENT_PREFIX=${{ github.head_ref }}" >> $GITHUB_ENV
+      run: echo "DEPLOYMENT_NAME=${{ github.head_ref }}" >> $GITHUB_ENV
 
     - uses: actions/checkout@v2
 
@@ -62,14 +62,9 @@ jobs:
       id: apply
       shell: bash {0}
       run: |
-        if [[ "${{ env.DEPLOYMENT_PREFIX }}" == "" ]]
-        then
-          workspace=prod
-        else
-          workspace=${{ env.DEPLOYMENT_PREFIX }}
-        fi
-        { terraform workspace new "$workspace"; terraform workspace select "$workspace"; }
-        terraform apply -auto-approve -no-color -var="deployment_prefix=${{ env.DEPLOYMENT_PREFIX }}"
+        terraform workspace new ${{ env.DEPLOYMENT_NAME }}
+        terraform workspace select ${{ env.DEPLOYMENT_NAME }}
+        terraform apply -auto-approve -no-color
       working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}
 
 
@@ -78,8 +73,9 @@ jobs:
       if: github.event_name == 'pull_request'
       shell: bash {0}
       run: |
-        terraform workspace new prod; terraform workspace select prod
-        terraform plan -no-color -var="deployment_prefix="
+        terraform workspace new prod
+        terraform workspace select prod
+        terraform plan -no-color
       working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}
 
     - uses: actions/github-script@v6
@@ -211,11 +207,11 @@ jobs:
     steps:
     - name: Main branch deployment prefix
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-      run: echo "DEPLOYMENT_PREFIX=" >> $GITHUB_ENV
+      run: echo "DEPLOYMENT_NAME=prod" >> $GITHUB_ENV
 
     - name: Non-main branch deployment prefix
       if: ${{ github.event_name == 'pull_request' }}
-      run: echo "DEPLOYMENT_PREFIX=${{ github.head_ref }}" >> $GITHUB_ENV
+      run: echo "DEPLOYMENT_NAME=${{ github.head_ref }}" >> $GITHUB_ENV
 
     - uses: actions/checkout@v2
 
@@ -232,13 +228,8 @@ jobs:
     - name: Terraform Workspace
       shell: bash {0}
       run: |
-        if [[ "${{ env.DEPLOYMENT_PREFIX }}" == "" ]]
-        then
-          workspace=prod
-        else
-          workspace=${{ env.DEPLOYMENT_PREFIX }}
-        fi
-        { terraform workspace new "$workspace"; terraform workspace select "$workspace"; }
+        terraform workspace new ${{ env.DEPLOYMENT_NAME }}
+        terraform workspace select ${{ env.DEPLOYMENT_NAME }}
       working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}
 
     - name: Get resource group
