@@ -4,6 +4,10 @@ terraform {
       source  = "hashicorp/azurerm",
       version = "~> 3.8.0"
     }
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "~> 3.0"
+    }
   }
   backend "azurerm" {
     resource_group_name  = "tfstate"
@@ -16,4 +20,8 @@ terraform {
 provider "azurerm" {
   features {}
   skip_provider_registration = "true"
+}
+
+provider "cloudflare" {
+
 }

@@ -1,3 +1,8 @@
+locals {
+  zone_id = "63e0c4e8461fe6f7acd680c3a2c8ba9d"
+  domain  = "jkomskis.com"
+}
+
 resource "random_string" "resource_code" {
   length  = 15
   special = false
@@ -19,4 +24,12 @@ resource "azurerm_storage_account" "this" {
   static_website {
     index_document = "index.html"
   }
+}
+
+resource "cloudflare_record" "www" {
+  zone_id = local.zone_id
+  name    = "www${var.deployment_prefix == "" ? "" : ".${var.deployment_prefix}"}"
+  value   = azurerm_storage_account.this.primary_web_endpoint
+  type    = "CNAME"
+  proxied = true
 }
