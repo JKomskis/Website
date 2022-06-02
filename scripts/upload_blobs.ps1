@@ -1,7 +1,6 @@
 # Usage: upload_blobs.ps1 <Resource Group Name> <Storage Account Name> <Storage path prefix>
 $rgName=$args[0]
 $acctName=$args[1]
-$blobPrefix=$args[2] ?? ""
 $localFolder="_site"
 
 Set-AzCurrentStorageAccount -ResourceGroupName $rgName -Name $acctName
@@ -23,20 +22,12 @@ function Get-LocalBlobs {
 }
 
 function Get-RemoteBlobs {
-    param(
-        [Parameter()]
-        [String] $prefix
-    )
-
-    return Get-AzStorageBlob -Container '$web' -Prefix $prefix -ConcurrentTaskCount 50 | ForEach-Object -Parallel {
-        $prefix = $using:prefix
+    return Get-AzStorageBlob -Container '$web' -ConcurrentTaskCount 50 | ForEach-Object -Parallel {
         $blob = "" | Select-Object Name,Hash
         $blob.Name = $_.Name
         $blob.Hash = -join $_.BlobProperties.ContentHash.ForEach('ToString', 'X2')
 
-        if ( ($prefix) -or !($blob.Name -like 'staging/*') ) {
-            return $blob
-        }
+        return $blob
     }
 }
 
@@ -104,11 +95,11 @@ function Remove-Blobs {
         Write-Output "Removing file $_"
         Get-AzStorageBlob -Container '$web' -Blob $_ | Remove-AzStorageBlob
     } -ThrottleLimit 50
-    
+
 }
 
 $localFiles = Get-LocalBlobs
-$remoteFiles = (Get-RemoteBlobs $blobPrefix)
+$remoteFiles = Get-RemoteBlobs
 
 $differences = Compare-Object $localFiles $remoteFiles -Property Name, Hash
 

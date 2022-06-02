@@ -2,6 +2,10 @@
 
 [JKomskis.com](https://jkomskis.com), now backed by Azure Storage, Azure CDN, and Cloudflare.
 
+## Setup
+
+1. Run `npm install` to setup dependencies
+
 ## Usage
 
 * Run `npm run build` to build the website (files are placed in _site/)

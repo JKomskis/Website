@@ -106,47 +106,47 @@ async function downloadArchives() {
     }
 }
 
-module.exports = async function () {
-    console.log('Creating commit list');
-    await makeArchiveFolder();
-    await downloadArchives();
+// module.exports = async function () {
+//     console.log('Creating commit list');
+//     await makeArchiveFolder();
+//     await downloadArchives();
 
-    let commits = [];
-    for (const archive of await getDownloadedFiles()) {
-        await new Promise((resolve) => {
-            createReadStream(archive)
-                .pipe(createGunzip())
-                .pipe(split())
-                .on('data', (buffer) => {
-                    const eventObj = JSON.parse(buffer);
-                    let fullRepoName = eventObj['repo']['name'];
-                    let branchName = eventObj['payload']['ref'].startsWith('refs/heads/')
-                        ? eventObj['payload']['ref'].substring(eventObj['payload']['ref'].indexOf('/', 5) + 1)
-                        : '';
-                    const commit = {
-                        authorName: eventObj['actor']['display_login'],
-                        authorUrl: `https://github.com/${eventObj['actor']['display_login']}`,
-                        authorAvatarUrl: `${eventObj['actor']['avatar_url']}s=144`,
-                        repoOwner: fullRepoName.split('/')[0],
-                        repoName: fullRepoName.split('/')[1],
-                        repoUrl: `https://github.com/${fullRepoName}`,
-                        branchName: branchName,
-                        branchUrl: `https://github.com/${fullRepoName}/tree/${branchName}`,
-                        commitTime: eventObj['created_at'],
-                    };
-                    eventObj['payload']['commits'].forEach((eventCommit) => {
-                        commits.push({
-                            ...commit,
-                            message: eventCommit['message'],
-                            commitUrl: `https://github.com/${fullRepoName}/commit/${eventCommit['sha']}`,
-                        });
-                    });
-                })
-                .on('end', () => {
-                    resolve();
-                });
-        });
-    }
+//     let commits = [];
+//     for (const archive of await getDownloadedFiles()) {
+//         await new Promise((resolve) => {
+//             createReadStream(archive)
+//                 .pipe(createGunzip())
+//                 .pipe(split())
+//                 .on('data', (buffer) => {
+//                     const eventObj = JSON.parse(buffer);
+//                     let fullRepoName = eventObj['repo']['name'];
+//                     let branchName = eventObj['payload']['ref'].startsWith('refs/heads/')
+//                         ? eventObj['payload']['ref'].substring(eventObj['payload']['ref'].indexOf('/', 5) + 1)
+//                         : '';
+//                     const commit = {
+//                         authorName: eventObj['actor']['display_login'],
+//                         authorUrl: `https://github.com/${eventObj['actor']['display_login']}`,
+//                         authorAvatarUrl: `${eventObj['actor']['avatar_url']}s=144`,
+//                         repoOwner: fullRepoName.split('/')[0],
+//                         repoName: fullRepoName.split('/')[1],
+//                         repoUrl: `https://github.com/${fullRepoName}`,
+//                         branchName: branchName,
+//                         branchUrl: `https://github.com/${fullRepoName}/tree/${branchName}`,
+//                         commitTime: eventObj['created_at'],
+//                     };
+//                     eventObj['payload']['commits'].forEach((eventCommit) => {
+//                         commits.push({
+//                             ...commit,
+//                             message: eventCommit['message'],
+//                             commitUrl: `https://github.com/${fullRepoName}/commit/${eventCommit['sha']}`,
+//                         });
+//                     });
+//                 })
+//                 .on('end', () => {
+//                     resolve();
+//                 });
+//         });
+//     }
 
-    return commits;
-};
+//     return commits;
+// };
