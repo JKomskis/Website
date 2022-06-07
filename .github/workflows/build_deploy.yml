@@ -10,11 +10,13 @@ on:
 env:
   NODE_VERSION: '14.x'
   OBSCENE_COMMITS_CONTAINER_NAME: 'obscene_commits_archives'
-  INFRASTRUCTURE_FOLDER: './infrastructure/website'
+  INFRASTRUCTURE_FOLDER: './infrastructure'
+  DNS_INFRA_FOLDER: 'dns'
+  WEBSITE_INFRA_FOLDER: 'website'
   # LG_API_BASE_PATH: 'https://languagegarbler.jkomskis.com'
 
 jobs:
-  create_resources:
+  create_dns_resources:
     # Based on https://github.com/marketplace/actions/hashicorp-setup-terraform
     # Resources:
       # https://www.blendmastersoftware.com/blog/deploying-to-azure-using-terraform-and-github-actions
@@ -30,11 +32,11 @@ jobs:
       CLOUDFLARE_API_TOKEN: ${{secrets.CLOUDFLARE_API_TOKEN}}
 
     steps:
-    - name: Main branch deployment prefix
+    - name: Main branch deployment name
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       run: echo "DEPLOYMENT_NAME=prod" >> $GITHUB_ENV
 
-    - name: Non-main branch deployment prefix
+    - name: Non-main branch deployment name
       if: ${{ github.event_name == 'pull_request' }}
       run: echo "DEPLOYMENT_NAME=${{ github.head_ref }}" >> $GITHUB_ENV
 
@@ -46,17 +48,17 @@ jobs:
       id: fmt
       run: terraform fmt -check
       continue-on-error: true
-      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}
+      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}/${{ env.DNS_INFRA_FOLDER }}
 
     - name: Terraform Init
       id: init
       run: terraform init
-      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}
+      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}/${{ env.DNS_INFRA_FOLDER }}
 
     - name: Terraform Validate
       id: validate
       run: terraform validate -no-color
-      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}
+      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}/${{ env.DNS_INFRA_FOLDER }}
 
     - name: Terraform Apply
       id: apply
@@ -65,8 +67,7 @@ jobs:
         terraform workspace new ${{ env.DEPLOYMENT_NAME }}
         terraform workspace select ${{ env.DEPLOYMENT_NAME }}
         terraform apply -auto-approve -no-color
-      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}
-
+      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}/${{ env.DNS_INFRA_FOLDER }}
 
     - name: Terraform Plan
       id: plan
@@ -76,7 +77,7 @@ jobs:
         terraform workspace new prod
         terraform workspace select prod
         terraform plan -no-color
-      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}
+      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}/${{ env.DNS_INFRA_FOLDER }}
 
     - uses: actions/github-script@v6
       if: github.event_name == 'pull_request'
@@ -92,11 +93,135 @@ jobs:
             issue_number: context.issue.number,
           })
           const botComment = comments.find(comment => {
-            return comment.user.type === 'Bot' && comment.body.includes('Terraform Format and Style')
+            return comment.user.type === 'Bot' && comment.body.includes('DNS Terraform Summary')
           })
 
           // 2. Prepare format of the comment
-          const output = `#### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+          const output = `#### DNS Terraform Summary
+          #### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
+          #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+          #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
+          <details><summary>Validation Output</summary>
+
+          \`\`\`\n
+          ${{ steps.validate.outputs.stdout }}
+          \`\`\`
+
+          </details>
+
+          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+
+          <details><summary>Show Plan</summary>
+
+          \`\`\`\n
+          ${process.env.PLAN}
+          \`\`\`
+
+          </details>
+
+          *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`, Working Directory: \`${{ env.INFRASTRUCTURE_FOLDER }}\`, Workflow: \`${{ github.workflow }}\`*`;
+
+          // 3. If we have a comment, update it, otherwise create a new one
+          if (botComment) {
+            github.rest.issues.updateComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: botComment.id,
+              body: output
+            })
+          } else {
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            })
+          }
+
+  create_website_resources:
+    # Based on https://github.com/marketplace/actions/hashicorp-setup-terraform
+    # Resources:
+      # https://www.blendmastersoftware.com/blog/deploying-to-azure-using-terraform-and-github-actions
+    runs-on: ubuntu-latest
+    environment: deploy
+    needs: [create_dns_resources]
+
+    env:
+      ARM_CLIENT_ID: ${{secrets.ARM_CLIENT_ID}}
+      ARM_CLIENT_SECRET: ${{secrets.ARM_CLIENT_SECRET}}
+      ARM_SUBSCRIPTION_ID: ${{secrets.ARM_SUBSCRIPTION_ID}}
+      ARM_TENANT_ID: ${{secrets.ARM_TENANT_ID}}
+      CLOUDFLARE_EMAIL: ${{secrets.CLOUDFLARE_EMAIL}}
+      CLOUDFLARE_API_TOKEN: ${{secrets.CLOUDFLARE_API_TOKEN}}
+
+    steps:
+    - name: Main branch deployment name
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      run: echo "DEPLOYMENT_NAME=prod" >> $GITHUB_ENV
+
+    - name: Non-main branch deployment name
+      if: ${{ github.event_name == 'pull_request' }}
+      run: echo "DEPLOYMENT_NAME=${{ github.head_ref }}" >> $GITHUB_ENV
+
+    - uses: actions/checkout@v2
+
+    - uses: hashicorp/setup-terraform@v2
+
+    - name: Terraform fmt
+      id: fmt
+      run: terraform fmt -check
+      continue-on-error: true
+      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}/${{ env.WEBSITE_INFRA_FOLDER }}
+
+    - name: Terraform Init
+      id: init
+      run: terraform init
+      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}/${{ env.WEBSITE_INFRA_FOLDER }}
+
+    - name: Terraform Validate
+      id: validate
+      run: terraform validate -no-color
+      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}/${{ env.WEBSITE_INFRA_FOLDER }}
+
+    - name: Terraform Apply
+      id: apply
+      shell: bash {0}
+      run: |
+        terraform workspace new ${{ env.DEPLOYMENT_NAME }}
+        terraform workspace select ${{ env.DEPLOYMENT_NAME }}
+        terraform apply -auto-approve -no-color
+      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}/${{ env.WEBSITE_INFRA_FOLDER }}
+
+    - name: Terraform Plan
+      id: plan
+      if: github.event_name == 'pull_request'
+      shell: bash {0}
+      run: |
+        terraform workspace new prod
+        terraform workspace select prod
+        terraform plan -no-color
+      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}/${{ env.WEBSITE_INFRA_FOLDER }}
+
+    - uses: actions/github-script@v6
+      if: github.event_name == 'pull_request'
+      env:
+        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          // 1. Retrieve existing bot comments for the PR
+          const { data: comments } = await github.rest.issues.listComments({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+          })
+          const botComment = comments.find(comment => {
+            return comment.user.type === 'Bot' && comment.body.includes('Website Terraform Summary')
+          })
+
+          // 2. Prepare format of the comment
+          const output = `#### Website Terraform Summary
+          #### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
           #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
           #### Terraform Validation 🤖\`${{ steps.validate.outcome }}\`
           <details><summary>Validation Output</summary>
@@ -149,7 +274,7 @@ jobs:
     - name: Cache node modules
       uses: actions/cache@v2
       env:
-        cache-name: cache-node-modules
+        cache-name: cache-node-modules-frontend
       with:
         path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
         key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('package-lock.json') }}
@@ -189,10 +314,9 @@ jobs:
         name: dist
         path: _site/
 
-  deploy:
+  deploy_frontend:
     # https://blog.nillsf.com/index.php/2020/08/25/how-to-use-terraform-output-in-a-github-action/
-    needs: [create_resources, build_frontend]
-    if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.head_ref != 'main' && github.event.pull_request.user.login != 'dependabot[bot]') || github.event_name == 'workflow_dispatch' }}
+    needs: [create_website_resources, build_frontend]
     runs-on: ubuntu-latest
     environment: deploy
 
@@ -205,11 +329,11 @@ jobs:
       CLOUDFLARE_API_TOKEN: ${{secrets.CLOUDFLARE_API_TOKEN}}
 
     steps:
-    - name: Main branch deployment prefix
+    - name: Main branch deployment name
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       run: echo "DEPLOYMENT_NAME=prod" >> $GITHUB_ENV
 
-    - name: Non-main branch deployment prefix
+    - name: Non-main branch deployment name
       if: ${{ github.event_name == 'pull_request' }}
       run: echo "DEPLOYMENT_NAME=${{ github.head_ref }}" >> $GITHUB_ENV
 

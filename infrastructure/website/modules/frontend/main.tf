@@ -1,20 +1,10 @@
 locals {
-  zone_id         = "63e0c4e8461fe6f7acd680c3a2c8ba9d"
   domain          = "jkomskis.com"
-  www_record_name = "www${terraform.workspace == "prod" ? "" : ".${terraform.workspace}"}"
-}
-
-resource "random_string" "resource_code" {
-  length  = 15
-  special = false
-  upper   = false
-  keepers = {
-    resource_group = var.resource_group
-  }
+  www_record_name = "www${terraform.workspace == "prod" ? "" : "-${terraform.workspace}"}"
 }
 
 resource "azurerm_storage_account" "this" {
-  name                = "${random_string.resource_code.result}storage"
+  name                = "${var.resource_code}storage"
   resource_group_name = var.resource_group
 
   location                 = var.location
@@ -35,7 +25,7 @@ resource "azurerm_cdn_profile" "this" {
 }
 
 resource "azurerm_cdn_endpoint" "www" {
-  name                = "${replace(local.www_record_name, ".", "-")}-jkomskis"
+  name                = "${local.www_record_name}-jkomskis"
   profile_name        = azurerm_cdn_profile.this.name
   location            = var.location
   resource_group_name = var.resource_group
@@ -54,22 +44,5 @@ resource "azurerm_cdn_endpoint_custom_domain" "www" {
   cdn_managed_https {
     certificate_type = "Dedicated"
     protocol_type    = "ServerNameIndication"
-  }
-
-  depends_on = [
-    cloudflare_record.www
-  ]
-}
-
-resource "cloudflare_record" "www" {
-  zone_id = local.zone_id
-  name    = local.www_record_name
-  value   = azurerm_cdn_endpoint.www.fqdn
-  type    = "CNAME"
-  proxied = false
-  provisioner "local-exec" {
-    working_dir = "./modules/frontend"
-    interpreter = ["/bin/bash", "-c"]
-    command     = "./wait_for_dns.sh ${cloudflare_record.www.name}.${local.domain}"
   }
 }

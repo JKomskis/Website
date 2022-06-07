@@ -9,7 +9,7 @@ terraform {
     resource_group_name  = "tfstate"
     storage_account_name = "tfstatey2211t1ee3l4g9e"
     container_name       = "tfstate"
-    key                  = "website.tfstate"
+    key                  = "cdn.tfstate"
   }
 }
 

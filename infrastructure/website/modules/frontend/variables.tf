@@ -8,3 +8,9 @@ variable "resource_group" {
   default     = "website-prod"
   description = "Resource group for website"
 }
+
+variable "resource_code" {
+  type        = string
+  default     = ""
+  description = "Unique code for use in creating resources"
+}
