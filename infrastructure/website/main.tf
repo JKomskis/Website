@@ -22,3 +22,12 @@ module "frontend" {
   resource_code  = random_string.resource_code.result
   location       = var.location
 }
+
+module "backend" {
+  source                            = "./modules/backend"
+  resource_group                    = azurerm_resource_group.this.name
+  resource_code                     = random_string.resource_code.result
+  location                          = var.location
+  storage_account_name              = module.frontend.storage_account_name
+  storage_account_connection_string = module.frontend.storage_account_connection_string
+}

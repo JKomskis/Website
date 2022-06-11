@@ -8,6 +8,10 @@ import { faArrowRight, faTimes, faSpinner } from '@fortawesome/free-solid-svg-ic
 import { LanguageCode } from './languages';
 import { delay } from './util';
 
+declare global {
+    var apiBasePath: string;
+}
+
 @customElement('language-path')
 class LanguagePath extends LightDomLitElement {
     @property({ type: Array })
@@ -34,7 +38,7 @@ class LanguagePath extends LightDomLitElement {
     addStepHtml: string;
     spinnerHtml: string;
 
-    apiBasePath = process.env.LG_API_BASE_PATH;
+    apiBasePath = globalThis.apiBasePath;
     apiTranslatePath = '/api/translate';
 
     constructor() {
@@ -231,19 +235,15 @@ ${this.inputText}</textarea
                 <div class="path__output-area">
                     <div class="path__io-header">
                         <h3 class="path__io-title-text">Output Text:</h3>
-                        ${this.showError
-                            ? html`
-                                  <message-bar
-                                      class="message-bar message-bar--alert"
-                                      .messageType=${'alert'}
-                                      .message=${this.errorText}
-                                      @message-bar-close=${() => {
-                                          this.showError = false;
-                                      }}
-                                  >
-                                  </message-bar>
-                              `
-                            : html``}
+                        ${this.showError ? html`
+                            <message-bar
+                                class="message-bar message-bar--alert"
+                                .messageType=${'alert'}
+                                .message=${this.errorText}
+                                @message-bar-close=${() => { this.showError = false; }}
+                            >
+                            </message-bar>
+                        ` : html``}
                     </div>
                     <textarea readonly class="path__text-area" placeholder="Translated text will go here...">
 ${this.outputText}</textarea
@@ -253,8 +253,8 @@ ${this.outputText}</textarea
 
             <button
                 class="path__translate-button ${this.isTranslateButtonDisabled()
-                    ? 'path__translate-button--disabled'
-                    : ''}"
+                ? 'path__translate-button--disabled'
+                : ''}"
                 ?disabled=${this.isTranslateButtonDisabled()}
                 @click=${this.handleTranslate}
             >

@@ -9,11 +9,14 @@ sourceLink: https://github.com/JKomskis/Website/tree/main/web/languagegarbler
 <main class="main">
     {% include "components/side-project-header.njk" %}
     <h1>Language Garbler</h1>
-    <p>Language Garbler uses language translation APIs to pass text through 
-    multiple languages at a time. Simply enter text in the "input text" box, 
+    <p>Language Garbler uses language translation APIs to pass text through
+    multiple languages at a time. Simply enter text in the "input text" box,
     adjust the translation path as desired, and click "Translate".
     </p>
     <h3><strong>Translation path:</strong></h3>
     <language-path class="path"></language-path>
 </main>
+<script type="text/javascript">
+ var apiBasePath = "{{ api_base_path }}";
+</script>
 <script type="module" src="{{ '/languagegarbler/js/bundle.js' | url }}"></script>

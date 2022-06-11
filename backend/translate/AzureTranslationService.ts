@@ -12,7 +12,7 @@ export class AzureTranslationService implements TranslationService {
             baseURL: AzureTranslationService.baseUrl,
             url: AzureTranslationService.translateUrl,
             headers: {
-                'Ocp-Apim-Subscription-Key': process.env.AZURE_SECRET_KEY,
+                'Ocp-Apim-Subscription-Key': process.env.AZ_TRANSLATE_SECRET_KEY,
                 'content-type': 'application/json; charset=UTF-8',
             },
             params: {

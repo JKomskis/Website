@@ -347,26 +347,26 @@ jobs:
     - name: Terraform Init
       id: init
       run: terraform init
-      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}
+      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}/${{ env.WEBSITE_INFRA_FOLDER }}
 
     - name: Terraform Workspace
       shell: bash {0}
       run: |
         terraform workspace new ${{ env.DEPLOYMENT_NAME }}
         terraform workspace select ${{ env.DEPLOYMENT_NAME }}
-      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}
+      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}/${{ env.WEBSITE_INFRA_FOLDER }}
 
     - name: Get resource group
       run: |
         rg=$(terraform output resource_group | tr -d '"')
         echo "RESOURCE_GROUP=$rg" >> $GITHUB_ENV
-      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}
+      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}/${{ env.WEBSITE_INFRA_FOLDER }}
 
     - name: Get storage account
       run: |
         sa=$(terraform output storage_account_name | tr -d '"')
         echo "STORAGE_ACCOUNT_NAME=$sa" >> $GITHUB_ENV
-      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}
+      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}/${{ env.WEBSITE_INFRA_FOLDER }}
 
     - name: Print variables
       run: |
@@ -389,3 +389,106 @@ jobs:
         azPSVersion: latest
         inlineScript: |
           & "${{ github.workspace }}/scripts/upload_blobs.ps1" ${{ env.RESOURCE_GROUP }} ${{ env.STORAGE_ACCOUNT_NAME }}
+
+  build_deploy_backend:
+    # https://blog.nillsf.com/index.php/2020/08/25/how-to-use-terraform-output-in-a-github-action/
+    needs: [create_website_resources]
+    runs-on: ubuntu-latest
+    environment: deploy
+
+    env:
+      AZURE_FUNCTIONAPP_PACKAGE_PATH: 'backend/' # set this to the path to your web app project, defaults to the repository root
+
+    steps:
+    - name: Main branch deployment name
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      run: echo "DEPLOYMENT_NAME=prod" >> $GITHUB_ENV
+
+    - name: Non-main branch deployment name
+      if: ${{ github.event_name == 'pull_request' }}
+      run: echo "DEPLOYMENT_NAME=${{ github.head_ref }}" >> $GITHUB_ENV
+
+    - uses: actions/checkout@v2
+
+    - name: Cache node modules
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-node-modules-backend
+      with:
+        path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles(format('{0}/package-lock.json', env.AZURE_FUNCTIONAPP_PACKAGE_PATH)) }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+
+    - name: Use Node.js ${{ env.NODE_VERSION }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+
+    - run: npm ci
+      working-directory: ./${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+
+    - name: 'Build functions'
+      run: npm run build --if-present
+      working-directory: ./${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_wrapper: false
+
+    - name: Terraform Init
+      id: init
+      run: terraform init
+      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}/${{ env.WEBSITE_INFRA_FOLDER }}
+
+    - name: Terraform Workspace
+      shell: bash {0}
+      run: |
+        terraform workspace new ${{ env.DEPLOYMENT_NAME }}
+        terraform workspace select ${{ env.DEPLOYMENT_NAME }}
+      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}/${{ env.WEBSITE_INFRA_FOLDER }}
+
+    - name: Get resource group
+      run: |
+        rg=$(terraform output resource_group | tr -d '"')
+        echo "RESOURCE_GROUP=$rg" >> $GITHUB_ENV
+      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}/${{ env.WEBSITE_INFRA_FOLDER }}
+
+    - name: Get function app name
+      run: |
+        fa=$(terraform output function_app_name | tr -d '"')
+        echo "FUNCTION_APP_NAME=$fa" >> $GITHUB_ENV
+      working-directory: ${{ env.INFRASTRUCTURE_FOLDER }}/${{ env.WEBSITE_INFRA_FOLDER }}
+
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        enable-AzPSSession: true
+
+    # https://www.shanebart.com/deploy-az-func-with-github-actions/
+    - name: 'Get Function App Publish Profile'
+      id: pubprofile
+      uses: azure/powershell@v1
+      with:
+        inlineScript: |
+          $profile = Get-AzWebAppPublishingProfile -ResourceGroupName $env:RESOURCE_GROUP -Name $env:FUNCTION_APP_NAME
+          $profile = $profile.Replace("`r", "").Replace("`n", "")
+          Write-Output "::set-output name=pubprofile::$profile"
+          Remove-Variable profile
+        azPSVersion: "latest"
+
+    - name: 'Deploy Azure Functions'
+      uses: Azure/functions-action@v1
+      with:
+        app-name: "website-${{ env.DEPLOYMENT_NAME }}"
+        package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+        publish-profile: ${{ steps.pubprofile.outputs.pubprofile }}
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: dist-backend
+        path: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/dist
+

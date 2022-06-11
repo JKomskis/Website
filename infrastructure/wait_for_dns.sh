@@ -6,7 +6,6 @@ while [[ $dig_output == "" ]]
 do
     dig_output=$(dig @1.1.1.1 $dns_name | grep "ANSWER SECTION")
     echo "No record yet..."
-    echo `dig @1.1.1.1 $dns_name`
-    sleep 30
+    sleep 10
 done
 echo "Record found"

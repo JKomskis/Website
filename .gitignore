@@ -4,12 +4,6 @@ node_modules
 # build folder
 _site
 
-# archives folder
-archives
-
-# VSCode workspace files
-.vscode
-
 # Environmental files
 .env
 

@@ -40,10 +40,10 @@ async function compileTs() {
                 format: 'es'
             },
             plugins: [
-                replace({
-                    'process.env.LG_API_BASE_PATH': JSON.stringify(process.env.LG_API_BASE_PATH),
-                    preventAssignment: true
-                }),
+                // replace({
+                //     'process.env.LG_API_BASE_PATH': JSON.stringify(process.env.LG_API_BASE_PATH),
+                //     preventAssignment: true
+                // }),
                 rollupTypescript(),
                 nodeResolve.nodeResolve({ browser: true }),
                 commonjs({
@@ -77,7 +77,7 @@ async function compileTs() {
                 file.dirname = path.join(paths.ts.dest, relativeDirname);
             }))
             .pipe(dest('.'));
-    }));    
+    }));
 }
 
 exports.ts = series(lintTs, compileTs);
