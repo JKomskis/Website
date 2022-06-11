@@ -2,11 +2,31 @@
 
 [JKomskis.com](https://jkomskis.com), now backed by Azure Storage, Azure CDN, and Cloudflare.
 
+## Setup
+
+1. Install [Azure CLI](https://docs.microsoft.com/en-us/powershell/azure/install-az-ps?view=azps-8.0.0) and [Azure Powershell](https://docs.microsoft.com/en-us/powershell/azure/install-az-ps?view=azps-8.0.0).
+2. Run `npm ci` to setup dependencies
+
 ## Usage
 
 * Run `npm run build` to build the website (files are placed in _site/)
 * Run `npm run build:prod` to create a production build of the website (files are placed in _site/)
 * Run `npm run serve` to host the _site/ folder locally
+
+## Deploying
+
+When deploying the project, the following secrets are needed in a Github environment named `deploy`:
+
+* `ARM_CLIENT_ID` - Azure service principal client ID; needed for Terraform
+* `ARM_CLIENT_SECRET` - Azure service principal client secret; needed for Terraform
+* `ARM_SUBSCRIPTION_ID` - Azure service principal subscription ID; needed for Terraform
+* `ARM_TENANT_ID` - Azure service principal tenant ID; needed for Terraform
+* `AZURE CREDENTIALS` - JSON object returned when an Azure service principal is created; needed for the az login action
+* `CLOUDFLARE_API_TOKEN` - Cloudflare API token; needed for terraform
+* `CLOUDFLARE_EMAIL` - Cloudflare account email; needed for terraform
+
+The Azure service principal should have contributor rights over the subscription when the resources will be deployed.
+The Cloudflare API token should have DNS edit permissions over the appropriate domain.
 
 ## Environmental Variables
 

@@ -1,15 +1,15 @@
-let pathPrefix = process.env.FRONTEND_PATH_PREFIX || "/";
-if(pathPrefix.startsWith("/")) {
-    pathPrefix.substr(1);
-}
-if(pathPrefix.endsWith("/")) {
-    pathPrefix.substr(0, pathPrefix.length-1);
-}
+// let pathPrefix = process.env.FRONTEND_PATH_PREFIX || "/";
+// if(pathPrefix.startsWith("/")) {
+//     pathPrefix.substr(1);
+// }
+// if(pathPrefix.endsWith("/")) {
+//     pathPrefix.substr(0, pathPrefix.length-1);
+// }
 
 let outputDir = './_site'
-if(pathPrefix !== "") {
-    outputDir = `./_site/${pathPrefix}`;
-}
+// if(pathPrefix !== "") {
+//     outputDir = `./_site/${pathPrefix}`;
+// }
 
 module.exports = {
     src: "./web",

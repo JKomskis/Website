@@ -1,17 +1,53 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558 
-    // for the documentation about the tasks.json format
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "type": "gulp",
-            "task": "build",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "problemMatcher": [],
-            "label": "gulp: build"
-        }
-    ]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "gulp",
+      "task": "build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "label": "gulp: build"
+    },
+    {
+      "type": "func",
+      "command": "host start",
+      "problemMatcher": "$func-node-watch",
+      "isBackground": true,
+      "dependsOn": "npm build (functions)",
+      "options": {
+        "cwd": "${workspaceFolder}/backend"
+      }
+    },
+    {
+      "type": "shell",
+      "label": "npm build (functions)",
+      "command": "npm run build",
+      "dependsOn": "npm install (functions)",
+      "problemMatcher": "$tsc",
+      "options": {
+        "cwd": "${workspaceFolder}/backend"
+      }
+    },
+    {
+      "type": "shell",
+      "label": "npm install (functions)",
+      "command": "npm install",
+      "options": {
+        "cwd": "${workspaceFolder}/backend"
+      }
+    },
+    {
+      "type": "shell",
+      "label": "npm prune (functions)",
+      "command": "npm prune --production",
+      "dependsOn": "npm build (functions)",
+      "problemMatcher": [],
+      "options": {
+        "cwd": "${workspaceFolder}/backend"
+      }
+    }
+  ]
 }

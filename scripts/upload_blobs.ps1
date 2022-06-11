@@ -1,8 +1,7 @@
-# Usage: upload_blobs.ps1 <Resource Group Name> <Storage Account Name> <Storage path prefix>
-$rgName=$args[0]
-$acctName=$args[1]
-$blobPrefix=$args[2] ?? ""
-$localFolder="_site"
+# Usage: upload_blobs.ps1 <Resource Group Name> <Storage Account Name>
+$rgName = $args[0]
+$acctName = $args[1]
+$localFolder = "_site"
 
 Set-AzCurrentStorageAccount -ResourceGroupName $rgName -Name $acctName
 
@@ -11,7 +10,7 @@ function Get-LocalBlobs {
     # $blobs = @()
     Push-Location $localFolder
     $blobs = (Get-ChildItem -Recurse -File).FullName | Resolve-Path -Relative | ForEach-Object -Parallel {
-        $blob = "" | Select-Object Name,Hash
+        $blob = "" | Select-Object Name, Hash
         $blob.Name = $_.substring(2) # Remove leading ./
         $blob.Hash = (Get-FileHash $_ -Algorithm MD5).Hash
 
@@ -23,20 +22,12 @@ function Get-LocalBlobs {
 }
 
 function Get-RemoteBlobs {
-    param(
-        [Parameter()]
-        [String] $prefix
-    )
-
-    return Get-AzStorageBlob -Container '$web' -Prefix $prefix -ConcurrentTaskCount 50 | ForEach-Object -Parallel {
-        $prefix = $using:prefix
-        $blob = "" | Select-Object Name,Hash
+    return Get-AzStorageBlob -Container '$web' -ConcurrentTaskCount 50 | ForEach-Object -Parallel {
+        $blob = "" | Select-Object Name, Hash
         $blob.Name = $_.Name
         $blob.Hash = -join $_.BlobProperties.ContentHash.ForEach('ToString', 'X2')
 
-        if ( ($prefix) -or !($blob.Name -like 'staging/*') ) {
-            return $blob
-        }
+        return $blob
     }
 }
 
@@ -49,33 +40,33 @@ function Set-Blobs {
     $staticAssetCacheControl = "public, max-age=31536000, immutable"
     $revalidateAssetCacheControl = "no-cache"
     $properties = @{
-        ".css" = @{
+        ".css"   = @{
             CacheControl = $staticAssetCacheControl
-            ContentType = "text/css"
+            ContentType  = "text/css"
         }
-        ".js" = @{
+        ".js"    = @{
             CacheControl = $staticAssetCacheControl
-            ContentType = "application/javascript"
+            ContentType  = "application/javascript"
         }
         ".woff2" = @{
             CacheControl = $staticAssetCacheControl
-            ContentType = "font/woff2"
+            ContentType  = "font/woff2"
         }
-        ".jpg" = @{
+        ".jpg"   = @{
             CacheControl = $staticAssetCacheControl
-            ContentType = "image/jpeg"
+            ContentType  = "image/jpeg"
         }
-        ".png" = @{
+        ".png"   = @{
             CacheControl = $staticAssetCacheControl
-            ContentType = "image/png"
+            ContentType  = "image/png"
         }
-        ".svg" = @{
+        ".svg"   = @{
             CacheControl = $staticAssetCacheControl
-            ContentType = "image/svg+xml"
+            ContentType  = "image/svg+xml"
         }
-        ".html" = @{
+        ".html"  = @{
             CacheControl = $revalidateAssetCacheControl
-            ContentType = "text/html"
+            ContentType  = "text/html"
         }
     }
 
@@ -85,9 +76,10 @@ function Set-Blobs {
         Write-Output "Uploading file $_"
         $path = Get-Item $_
         $fileProperties = $properties_dict[$path.extension]
-        if($fileProperties) {
+        if ($fileProperties) {
             Set-AzStorageBlobContent -File $path.FullName -Blob $_ -Container '$web' -properties $fileProperties -Force
-        } else {
+        }
+        else {
             Set-AzStorageBlobContent -File $path.FullName -Blob $_ -Container '$web' -Force
         }
     } -ThrottleLimit 50
@@ -104,13 +96,13 @@ function Remove-Blobs {
         Write-Output "Removing file $_"
         Get-AzStorageBlob -Container '$web' -Blob $_ | Remove-AzStorageBlob
     } -ThrottleLimit 50
-    
+
 }
 
 $localFiles = Get-LocalBlobs
-$remoteFiles = (Get-RemoteBlobs $blobPrefix)
+$remoteFiles = Get-RemoteBlobs
 
-$differences = Compare-Object $localFiles $remoteFiles -Property Name, Hash
+$differences = Compare-Object @($localFiles | Select-Object) @($remoteFiles | Select-Object) -Property Name, Hash
 
 $missingRemoteFiles = ($differences | Where-Object { $_.SideIndicator -eq "<=" }).Name
 $extraRemoteFiles = ($differences | Where-Object { $_.SideIndicator -eq "=>" }).Name
@@ -119,11 +111,13 @@ $extraRemoteFiles = $extraRemoteFiles | Where-Object { $_ -notin $missingRemoteF
 
 if ( $missingRemoteFiles ) {
     Set-Blobs $missingRemoteFiles
-} else {
+}
+else {
     Write-Output "No blobs to upload"
 }
 if ( $extraRemoteFiles ) {
     Remove-Blobs $extraRemoteFiles
-} else {
+}
+else {
     Write-Output "No blobs to remove"
 }
